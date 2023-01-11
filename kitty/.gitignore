@@ -1,0 +1,2 @@
+*.conf
+!kitty.conf

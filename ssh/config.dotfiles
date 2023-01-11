@@ -1,0 +1,8 @@
+# vi: ft=sshconfig
+
+Host *
+	ServerAliveInterval 60
+
+Host localhost
+	UserKnownHostsFile /dev/null
+	StrictHostKeyChecking no

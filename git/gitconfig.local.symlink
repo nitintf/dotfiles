@@ -1,0 +1,64 @@
+# vi: ft=gitconfig
+
+[alias]
+	co = checkout
+	count = shortlog -sn
+	g = grep --break --heading --line-number
+	gi = grep --break --heading --line-number -i
+	changed = show --pretty=\"format:\" --name-only
+	fm = fetch-merge
+	please = push --force-with-lease
+	commit = commit -s
+	commend = commit -s --amend --no-edit
+	lt = log --tags --decorate --simplify-by-decoration --oneline
+[color]
+	diff = auto
+	status = auto
+	branch = auto
+	ui = true
+[core]
+	excludesfile = ~/.gitignore
+	editor = nvim
+	compression = -1
+	autocrlf = input
+	whitespace = trailing-space,space-before-tab
+	precomposeunicode = true
+[advice]
+	addEmptyPathspec = false
+[gpg]
+	program = gpg
+[apply]
+	whitespace = nowarn
+[help]
+	autocorrect = 1
+[diff]
+	tool = diffmerge
+[grep]
+	extendRegexp = true
+	lineNumber = true
+[push]
+	autoSetupRemote = true
+	default = simple
+[submodule]
+	fetchJobs = 4
+[commit]
+	gpgsign = true
+[tag]
+	gpgsign = true
+[log]
+	showSignature = false
+[pull]
+    ff = only
+[init]
+    defaultBranch = main
+[format]
+	signOff = true
+[diff]
+    tool = nvimdiff
+[difftool "nvimdiff"]
+    cmd = nvim -d "$LOCAL" "$REMOTE"
+[merge]
+    tool = nvimmerge
+[mergetool "nvimmerge"]
+    cmd = nvim -d $LOCAL $REMOTE $MERGED -c '$wincmd w' -c 'wincmd J'
+
