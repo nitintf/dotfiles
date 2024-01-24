@@ -13,7 +13,7 @@ end
 
 function fd -d "Show git diff using fzf" 
   # preview="git diff $@ --color=always -- {-1}"
-  git diff --name-only | fzf -m --ansi --preview git diff --color=always -- {-1}
+  git diff --name-only | fzf -m --ansi --preview "git diff --color=always -- {-1}"
 end
 
 
