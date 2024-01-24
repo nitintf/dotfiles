@@ -1,0 +1,110 @@
+# Docker
+alias dl='docker ps'
+alias dc='docker-compose'
+alias dv='docker volume ls'
+alias dce='docker-compose exec'
+alias dcs='docker-compose stop'
+alias dcd='docker-compose down'
+alias dcb='docker-compose build'
+alias dcu='docker-compose up -d'
+alias dlog='docker-compose logs -f'
+alias dx='docker system prune -a -f'
+alias dub='docker-compose up -d --build'
+alias dclear='docker rm -fv $(docker ps -aq)'
+alias dcud='docker-compose -f docker-compose.dev.yml up -d'
+alias dcsd='docker-compose -f docker-compose.dev.yml stop'
+alias dcup='docker-compose -f docker-compose.prod.yml up -d'
+alias dcsp='docker-compose -f docker-compose.prod.yml stop'
+
+# Fish
+alias fi='fisher install'
+alias fl='fisher list'
+alias fu='fisher update'
+alias fr='fisher remove'
+
+# Git
+alias lg='lazygit'
+alias ga='git add'
+alias gp='git pull'
+alias gaa='git add .'
+alias gst='git status'
+alias gc='git commit -m'
+alias gnb='git checkout -b'
+alias gpu='git push origin master'
+alias gdm='git checkout -b dev-master'
+alias nah='git reset --hard && git clean -df'
+alias gfix='git rm -r --cached . && git add .'
+alias pf-ssh='GIT_SSH_COMMAND="ssh -i ~/.ssh/nitinpanwar-pf"'
+alias my-ssh='GIT_SSH_COMMAND="ssh -i ~/.ssh/nitintf"'
+alias bitcs-ssh='GIT_SSH_COMMAND="ssh -i ~/.ssh/nitinpanwarrr"'
+alias bp='bitcs-ssh push'
+alias mp='my-ssh git push'
+alias pr='git push --set-upstream origin'
+
+# Homebrew
+alias br='brew remove'
+alias bu='brew update'
+alias bs='brew search'
+alias bi='brew install'
+alias bupg='brew upgrade && brew cleanup'
+
+# Mac
+alias code='open $argv -a "Visual Studio Code"'
+alias reloadapps="defaults write com.apple.dock ResetLaunchPad -bool true; killall Dock"
+
+# Misc
+alias l='exa --icons -F -H --group-directories-first --git -1'
+alias ll='exa --icons --long'
+alias etxt='extract-text'
+alias wifi='wifi-password'
+alias div='print_divider'
+alias dm='color-mode dark'
+alias lm='color-mode light'
+alias essh='nvim ~/.ssh/config'
+alias chmodall='sudo chmod -R 0777'
+alias copyssh='pbcopy < ~/.ssh/$1'
+alias rk='pgrep kitty | xargs kill -SIGUSR1'
+alias dotbot='cd ~/.dotfiles && ./dotbot_install'
+alias dotup='cd ~/.dotfiles && git submodule update --remote dotbot'
+alias mssh='ruby ~/.dotfiles/commands/ssh.rb'
+alias sep='ruby ~/.dotfiles/commands/make_separator.rb'
+alias deploy="ssh DigitalOcean 'bash -s' < deploy.sh"
+
+# Neovim / Vim
+alias v='nvim'
+alias vi='nvim'
+alias vim='/opt/homebrew/bin/vim'
+alias nvu='cd ~/.dotfiles && rake update:neovim && prevd'
+
+# Python
+alias jup='jupyter notebook'
+alias pipb='pip freeze > ~/.dotfiles/PIP.txt'
+alias pipi='pip install -r ~/.dotfiles/PIP.txt'
+alias jupr="jupyter notebook --NotebookApp.allow_origin='https://colab.research.google.com' --port=9090 --no-browser"
+
+# Shell
+alias c='clear'
+alias tags='ctags -R'
+alias ea='nvim ~/.config/fish/aliases.fish'
+alias et='nvim ~/.config/tmux/tmux.conf'
+alias src='source ~/.config/fish/config.fish && fish_logo'
+alias reloaddns='dscacheutil -flushcache && sudo killall -HUP mDNSResponder'
+
+# Shell navigation
+alias ..='cd ..'
+alias bk='cd -'
+alias home='cd ~'
+alias ...='cd ../..'
+alias desk='cd ~/Desktop'
+alias ....='cd ../../..'
+alias .....='cd ../../../..'
+
+# Tmux
+alias tsa='tmux-sendall'                # Send a command to all windows and panes that don't have a process running
+alias tks='tmux kill-server'            # Kill everything
+alias tl='tmux list-sessions'           # List all of the open tmux sessions
+alias ts='tmux choose-session'          # Choose a session to attach to
+alias tk='tmux kill-session -t'         # Kill a named tmux session
+alias t='tmux attach || tmux new-session'   # Attaches tmux to the last session; creates a new session if none exists.
+alias tpi='~/.config/tmux/plugins/tpm/bin/install_plugins' # Installs Tmux plugins
+alias tpu='~/.config/tmux/plugins/tpm/bin/update_plugins all' # Updates all Tmux plugins

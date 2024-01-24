@@ -1,0 +1,6 @@
+pane	0	1	1	:*	1	~/.c/starship	:/Users/bitcs/.config/starship	1	fish	:
+pane	0	1	1	:*	2	~/code	:/Users/bitcs/code	0	fish	:
+pane	1	1	1	:*	1	~/c/matri-rn	:/Users/bitcs/code/matri-rn	1	fish	:
+window	0	1	:fish	1	:*	760d,173x47,0,0{86x47,0,0,0,86x47,87,0,1}	:
+window	1	1	:fish	1	:*	c9bf,173x47,0,0,2	:
+state	1	

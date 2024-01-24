@@ -1,0 +1,17 @@
+pane	0	1	1	:*	1	~/.c/starship	:/Users/bitcs/.config/starship	1	fish	:
+pane	0	1	1	:*	2	~/code	:/Users/bitcs/code	0	fish	:
+pane	1	1	1	:*	1	~/c/matri-rn	:/Users/bitcs/code/matri-rn	1	fish	:
+pane	2	1	1	:*	1	~/.c/nvim	:/Users/bitcs/.config/nvim.chad	1	fish	:
+pane	3	1	1	:*	1	~/.c/n/lua	:/Users/bitcs/.config/nvim.nitin/lua	0	fish	:
+pane	3	1	1	:*	2	~/.c/n/lua	:/Users/bitcs/.config/nvim.chad/lua	1	fish	:
+pane	4	1	0	:-	1	vi ~/.c/starship	:/Users/bitcs/.config/starship	1	nvim	:nvim
+pane	4	2	1	:*	1	~/c/fitness	:/Users/bitcs/code/fitness	1	fish	:
+pane	6	1	1	:*	1	~/.c/nvim	:/Users/bitcs/.config/nvim	1	fish	:
+window	0	1	:fish	1	:*	760d,173x47,0,0{86x47,0,0,0,86x47,87,0,1}	:
+window	1	1	:[tmux]	1	:*	ccff,181x48,0,0,2	:
+window	2	1	:[tmux]	1	:*	cb60,215x57,0,0,3	:
+window	3	1	:fish	1	:*	e346,203x56,0,0{101x56,0,0,5,101x56,102,0,7}	:
+window	4	1	:nvim:starship	0	:-	633f,203x56,0,0,10	on
+window	4	2	:fitness	1	:*	6540,203x57,0,0,11	on
+window	6	1	:tmux	1	:*	62a6,210x56,0,0,17	:
+state	6	

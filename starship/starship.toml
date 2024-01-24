@@ -1,0 +1,103 @@
+# Get editor completions based on the config schema
+"$schema" = 'https://starship.rs/config-schema.json'
+
+right_format = "$time$cmd_duration"
+
+[battery]
+full_symbol = "🔋"
+charging_symbol = "🔌"
+discharging_symbol = "⚡"
+
+[[battery.display]]
+threshold = 30
+style = "bold red"
+
+[character]
+success_symbol = "[➜](bold #98c379)" #green
+error_symbol = "[➜](bold #e06c75)" #red
+
+[cmd_duration]
+format = " took [ $duration]($style)"
+style = "bold" #white
+
+[time]
+disabled = false
+time_format = "%R" # Hour:Minute Format
+format = '[ ♥ $time ]($style)'
+
+[directory]
+read_only = " "
+style = "bold #c678dd" #purple
+
+[git_branch]
+symbol = ""
+style = "bold #61afef"
+format = 'on[ $symbol $branch ]($style)'
+
+[git_commit]
+commit_hash_length = 8
+style = "bold white"
+
+[git_state]
+format = '[\($state( $progress_current of $progress_total)\)]($style) '
+
+[git_status]
+format = '([\[$all_status$ahead_behind\]]($style) )'
+stashed = "[${count}*](green) " 
+modified = "[${count}+](yellow) " 
+deleted =  "[${count}-](red) " 
+conflicted =  "[${count}~](red) " 
+ahead = "⇡${count} "
+behind = "⇣${count} "
+untracked = "[${count}?](blue) " 
+staged = "[${count}+](green) "
+
+[java]
+symbol = " "
+style = "bold #61afef" #blue
+
+[nix_shell]
+symbol = " "
+style = "bold #61afef" #blue
+impure_msg = " [impure](bold #e06c75)"
+pure_msg = " [pure](bold)"
+
+[nodejs]
+symbol = ""
+format = 'via[ $symbol ($version) ]($style)'
+style = "bold #98c379" #green
+detect_files = ["package.json", ".node-version"]
+detect_folders = ["node_modules"]
+
+[rust]
+symbol = ""
+style = "bold #86BBD8"
+format = '[ $symbol ($version) ]($style)'
+
+[package]
+style = "bold #e06c75" #red
+
+[python]
+symbol = " "
+format = 'via[ $symbol ($version) ]($style)'
+style = "bold #e5c07b" #yellow
+
+[docker_context]
+symbol = " "
+format = '[ $symbol $context ]($style) $path'
+
+[golang]
+symbol = " "
+format = 'via[ $symbol ($version) ]($style)'
+
+[ruby]
+symbol = " "
+style = "bold #e06c75" #red
+
+[aws]
+disabled = true
+symbol = "  "
+
+[lua]
+disabled = true
+

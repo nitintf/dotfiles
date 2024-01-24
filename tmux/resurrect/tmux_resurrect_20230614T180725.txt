@@ -1,0 +1,21 @@
+pane	0	1	1	:*	1	~/.c/starship	:/Users/bitcs/.config/starship	1	fish	:
+pane	0	1	1	:*	2	~/code	:/Users/bitcs/code	0	fish	:
+pane	1	1	1	:*	1	~/c/matri-rn	:/Users/bitcs/code/matri-rn	1	fish	:
+pane	2	1	1	:*	1	~/.c/nvim.chad	:/Users/bitcs/.config/nvim.chad	1	fish	:
+pane	3	1	1	:*	1	~/.c/n/lua	:/Users/bitcs/.config/nvim.nitin/lua	0	fish	:
+pane	3	1	1	:*	2	~/.c/n/lua	:/Users/bitcs/.config/nvim.chad/lua	1	fish	:
+pane	4	1	0	:-	1	nvim ~/.c/starship	:/Users/bitcs/.config/starship	1	nvim	:nvim
+pane	4	2	1	:*	1	~/c/fitness	:/Users/bitcs/code/fitness	1	fish	:
+pane	6	1	0	:-	1	vi ~/c/matri-rn	:/Users/bitcs/code/matri-rn	1	nvim	:nvim
+pane	6	2	1	:*	1	vi ~/.c/nvim	:/Users/bitcs/.config/nvim	1	nvim	:nvim
+pane	work-0	1	1	:*	1	~/c/matri-rn	:/Users/bitcs/code/matri-rn	1	fish	:
+window	0	1	:fish	1	:*	5d70,210x56,0,0{105x56,0,0,1,104x56,106,0,2}	:
+window	1	1	:fish	1	:*	c4e0,210x56,0,0,3	:
+window	2	1	:fish	1	:*	c4e1,210x56,0,0,4	:
+window	3	1	:fish	1	:*	5d76,210x56,0,0{105x56,0,0,5,104x56,106,0,6}	:
+window	4	1	:nvim	0	:-	c4e4,210x56,0,0,7	on
+window	4	2	:fish	1	:*	c4e5,210x56,0,0,8	on
+window	6	1	:nvim:matri-rn	0	:-	c4e6,210x56,0,0,9	on
+window	6	2	:fish	1	:*	62a4,210x56,0,0,15	off
+window	work-0	1	:fish	1	:*	c4dd,210x56,0,0,0	:
+state	6	4
