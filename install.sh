@@ -14,17 +14,21 @@ GREEN='\033[0;32m'
 YELLOW='\033[1;36m'
 NC='\033[0m' # No Color
 
-ARROW='➜'
-TICK='✔'
-WRONG='✖'
-
 # Iterate over each item (file or directory) in the workspace
 for item_name in "${items[@]}"; do
      # Check if a directory or file with the same name already exists in ~/.config
     if [ -e "$config_path/$item_name" ]; then
+        # Check if the existing file is a symbolic link
+        if [ -L "$config_path/$item_name" ]; then
+            # Check if the symbolic link points to our file
+            if [ "$(readlink -- "$config_path/$item_name")" = "$workspace_path/$item_name" ]; then
+                echo "${YELLOW}$item_name is already a symbolic link to the correct file. Skipping.${NC}\n"
+                continue
+            fi
+        fi
         # Print the message and ask for confirmation before creating the symbolic link
-        echo "\n\nDo you want to create a symlink for ${GREEN}$item_name${NC} in $config_path? (y/n)"
-        echo "${YELLOW}$item_name already exists in $config_path. backup will be created.${NC}"
+        echo "\n\nLink ${GREEN}$item_name${NC} in $config_path? (y/n)"
+        echo "${YELLOW}already exists. backup will be created.${NC}"
         read -n 1 -r
         echo
         if [[ $REPLY =~ ^[Yy]$ ]]
@@ -33,25 +37,25 @@ for item_name in "${items[@]}"; do
             mv "$config_path/$item_name" "$config_path/${item_name}_backup"
             # Create a symbolic link in ~/.config
             ln -s "$workspace_path/$item_name" "$config_path/$item_name"
-            echo "Symbolic link for ${GREEN}$item_name${NC} has been successfully created in $config_path."
+            echo "${GREEN}Successfully linked${NC}\n"
         else
-            echo "Skipping symbolic link creation for $item_name.\n"
+            echo "Skipped.\n"
         fi
     else
         # Ask for confirmation before creating the symbolic link
-        echo "\nDo you want to create a symlink for ${GREEN}$item_name${NC} in $config_path? (y/n)"
+        echo "\n\nLink ${GREEN}$item_name${NC} in $config_path? (y/n)"
         read -n 1 -r
         echo
         if [[ $REPLY =~ ^[Yy]$ ]]
         then
             # Create a symbolic link in ~/.config
             ln -s "$workspace_path/$item_name" "$config_path/$item_name"
-            echo "${GREEN}Symbolic link for $item_name has been successfully created in $config_path.${NC}\n"
+            echo "${GREEN}Successfully linked${NC}\n"
         else
-            echo "Skipping symbolic link creation for $item_name.\n"
+            echo "Skipped.\n"
         fi
     fi
 done
 
 
-echo "\n${GREEN} Dotfiles installation complete! ${NC}\n"
+echo "\n\n\n${GREEN} Dotfiles installation complete! ${NC}\n"
