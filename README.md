@@ -24,4 +24,4 @@ cd dotfiles
 
 ## Uninstallation
 
-To uninstall, run the `uninstal.sh` script.
+To uninstall, run the `uninstall.sh` script.
