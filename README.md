@@ -2,6 +2,9 @@
 
 This repository contains my personal dotfiles for macOS. These are the base settings I use to set up a new Mac's development environment. It includes everything I need to create a productive workspace.
 
+![Screenshot 1](pictures//701shots_so.png.png)
+![Screenshot 2](pictures//946shots_so.png.png)
+
 ## Structure
 
 - `fish/`: This directory contains configuration files for the fish shell. It includes aliases, completions, configurations, plugins, and variables.
@@ -11,6 +14,8 @@ This repository contains my personal dotfiles for macOS. These are the base sett
 - `starship/`: This directory contains configuration files for Starship, a minimal, blazing fast, and extremely customizable prompt for any shell.
 - `tmux/`: This directory contains configuration files for tmux, a terminal multiplexer.
 - `uninstall.sh`: This is a shell script for uninstalling the tools and software installed by `install.sh`.
+
+
 
 ## Installation
 
