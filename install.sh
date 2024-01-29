@@ -6,26 +6,21 @@ workspace_path=$(pwd)
 # Store the config directory path in a variable
 config_path="$HOME/.config"
 
-# TODO: find a way to read the ignore list from the .dotfilesignore file
-# List of items to ignore
-ignore=("README.md" "install.sh" ".git" ".gitignore" "uninstall.sh" "LICENSE" ".dotfilesignore")
+# Define the array of file or directory names
+items=("fish" "kitty" "nvim" "starship" "tmux")
 
 # Define color codes
 GREEN='\033[0;32m'
-YELLOW='\033[1;33m'
+YELLOW='\033[1;36m'
 NC='\033[0m' # No Color
 
+ARROW='➜'
+TICK='✔'
+WRONG='✖'
+
 # Iterate over each item (file or directory) in the workspace
-for item in $(find . -maxdepth 1 -type f -or -type d | cut -c 3-); do
-    # Get the item name without the trailing slash (if it's a directory)
-    item_name=${item%/}
-
-    # Check if the item is in the ignore list
-    if printf '%s\n' "${ignore[@]}" | grep -Fxq "$item_name"; then
-        continue
-    fi
-
-    # Check if a directory or file with the same name already exists in ~/.config
+for item_name in "${items[@]}"; do
+     # Check if a directory or file with the same name already exists in ~/.config
     if [ -e "$config_path/$item_name" ]; then
         # Print the message and ask for confirmation before creating the symbolic link
         echo "\n\nDo you want to create a symlink for ${GREEN}$item_name${NC} in $config_path? (y/n)"
