@@ -6,8 +6,9 @@ workspace_path=$(pwd)
 # Store the config directory path in a variable
 config_path="$HOME/.config"
 
+# TODO: find a way to read the ignore list from the .dotfilesignore file
 # List of items to ignore
-ignore=("README.md" "install.sh" ".git" ".gitignore")
+ignore=("README.md" "install.sh" ".git" ".gitignore" "uninstall.sh" "LICENSE" ".dotfilesignore")
 
 # Define color codes
 GREEN='\033[0;32m'
@@ -27,7 +28,8 @@ for item in $(find . -maxdepth 1 -type f -or -type d | cut -c 3-); do
     # Check if a directory or file with the same name already exists in ~/.config
     if [ -e "$config_path/$item_name" ]; then
         # Print the message and ask for confirmation before creating the symbolic link
-        echo "\n${YELLOW}$item_name already exists in $config_path. Do you want to create a symlink for $item_name in $config_path and create a backup of the existing item? (y/n) ${NC}\n"
+        echo "\n\nDo you want to create a symlink for ${GREEN}$item_name${NC} in $config_path? (y/n)"
+        echo "${YELLOW}$item_name already exists in $config_path. backup will be created.${NC}"
         read -n 1 -r
         echo
         if [[ $REPLY =~ ^[Yy]$ ]]
@@ -36,13 +38,13 @@ for item in $(find . -maxdepth 1 -type f -or -type d | cut -c 3-); do
             mv "$config_path/$item_name" "$config_path/${item_name}_backup"
             # Create a symbolic link in ~/.config
             ln -s "$workspace_path/$item_name" "$config_path/$item_name"
-            echo "${GREEN}Symbolic link for $item_name has been successfully created in $config_path.${NC}"
+            echo "Symbolic link for ${GREEN}$item_name${NC} has been successfully created in $config_path."
         else
             echo "Skipping symbolic link creation for $item_name.\n"
         fi
     else
         # Ask for confirmation before creating the symbolic link
-        echo "Do you want to create a symlink for $item_name in $config_path? (y/n) \n"
+        echo "\nDo you want to create a symlink for ${GREEN}$item_name${NC} in $config_path? (y/n)"
         read -n 1 -r
         echo
         if [[ $REPLY =~ ^[Yy]$ ]]
