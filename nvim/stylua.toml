@@ -1,0 +1,19 @@
+# Set the maximum line length for formatting (default is 100)
+line_length = 80
+
+# Specify the behavior for breaking lines, options are:
+# "wrap" (default), "none", "block", or "args"
+line_break = "wrap"
+
+# Control indentation settings
+indent = "   "  # Use 4 spaces for indentation (you can change this)
+
+# Configure the number of empty lines to preserve
+format_single_line_tables = false
+empty_line_after_table = true
+
+# Align imports
+align_imports = "false"
+
+# Sort imports
+sort_imports = "false"
