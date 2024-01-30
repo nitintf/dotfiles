@@ -5,6 +5,7 @@ set -x GPG_TTY (tty)
 set -x EDITOR nvim
 set -x DOTNET_CLI_TELEMETRY_OPTOUT 1
 set -x HOMEBREW_NO_ANALYTICS 1
+set -x HOMEBREW_NO_AUTO_UPDATE 1
 set -x _ZO_DATA_DIR "$HOME/.local/share"
 set -x TERM screen-256color
 set -gx GO111MODULE on
@@ -40,4 +41,3 @@ if status is-interactive
     starship init fish | source
   # source /opt/homebrew/opt/asdf/libexec/asdf.fish
 end
-
