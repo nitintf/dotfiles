@@ -40,6 +40,7 @@ alias bitcs-ssh='GIT_SSH_COMMAND="ssh -i ~/.ssh/nitinpanwarrr"'
 alias bgp='bitcs-ssh push'
 alias mgp='my-ssh git push'
 alias pr='git push --set-upstream origin'
+alias gcu='git reset --soft HEAD^'
 
 # Homebrew
 alias br='brew remove'

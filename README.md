@@ -26,7 +26,3 @@ git clone https://github.com/yourusername/dotfiles.git
 cd dotfiles
 ./install.sh
 ```
-
-## Uninstallation
-
-To uninstall, run the `uninstall.sh` script.
