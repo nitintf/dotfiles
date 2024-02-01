@@ -37,16 +37,12 @@ function M.init()
         local sym = fn.sym
         return {
             Normal { fg = color.text, bg = color.bg }, -- Normal text
-
-            -- Common vim syntax groups used for all kinds of code and markup.
             -- Commented-out groups should chain up to their preferred (*) group
             -- by default.
             --
             -- See :h group-name
             --
             -- Uncomment and edit if you want more specific syntax highlighting.
-
-            Comment { fg = color.faded_text }, -- Any comment
 
             Constant { fg = color.silver },    -- (*) Any constant
             String { fg = color.green },       --   A string constant: "this is a string"
