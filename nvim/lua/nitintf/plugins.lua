@@ -6,16 +6,10 @@ return {
    },
 
    -- theming
-   {
-      "rktjmp/lush.nvim",
-      branch = "main",
-      lazy = false,
-    },
-
-   {
-      "sainnhe/gruvbox-material",
-      lazy = "false"
-   },
+  {
+    "sainnhe/everforest",
+    lazy = false,
+  },
 
    -- keymaps
    {
