@@ -2,8 +2,8 @@
 
 This repository contains my personal dotfiles for macOS. These are the base settings I use to set up a new Mac's development environment. It includes everything I need to create a productive workspace.
 
-![Screenshot 1](pictures//701shots_so.png)
-![Screenshot 2](pictures//946shots_so.png)
+![Screenshot 1](docs//kitty.png)
+![Screenshot 2](docs//nvim.png)
 
 ## Structure
 
