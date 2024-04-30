@@ -5,47 +5,47 @@ M.scratchpad_filename = "SIDENOTES"
 M.scratchpad_filetype = "md"
 
 function M.setup()
-  local plugin = require "no-neck-pain"
+	local plugin = require("no-neck-pain")
 
-  local sideBufOpts = {
-    enabled = true,
-    bo = {
-      filetype = M.scratchpad_filetype,
-      buftype = "nofile",
-      bufhidden = "hide",
-      buflisted = false,
-      swapfile = false,
-    },
-  }
+	local sideBufOpts = {
+		enabled = true,
+		bo = {
+			filetype = M.scratchpad_filetype,
+			buftype = "nofile",
+			bufhidden = "hide",
+			buflisted = false,
+			swapfile = false,
+		},
+	}
 
-  plugin.setup {
-    width = M.default_width,
+	plugin.setup({
+		width = M.default_width,
 
-    autocmds = {
-      enableOnVimEnter = vim.g.neovide,
-      enableOnTabEnter = false,
-      reloadOnColorSchemeChange = false,
-    },
+		autocmds = {
+			enableOnVimEnter = vim.g.neovide,
+			enableOnTabEnter = false,
+			reloadOnColorSchemeChange = false,
+		},
 
-    mappings = {
-      enabled = false,
-    },
+		mappings = {
+			enabled = false,
+		},
 
-    buffers = {
-      left = sideBufOpts,
-      right = sideBufOpts,
-      scratchPad = {
-        enabled = true,
-        fileName = M.scratchpad_filename,
-      },
-    },
+		buffers = {
+			left = sideBufOpts,
+			right = sideBufOpts,
+			scratchPad = {
+				enabled = true,
+				fileName = M.scratchpad_filename,
+			},
+		},
 
-    integrations = {
-      NeoTree = {
-        reopen = false,
-      },
-    },
-  }
+		integrations = {
+			NeoTree = {
+				reopen = false,
+			},
+		},
+	})
 end
 
 return M

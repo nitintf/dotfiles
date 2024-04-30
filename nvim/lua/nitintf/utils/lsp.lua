@@ -1,10 +1,10 @@
 local M = {}
 
 M.signs = {
-  Error = "ﮊ",
-  Warn  = "󱅧",
-  Hint  = "﮸",
-  Info  = "",
-};
+	Error = "ﮊ",
+	Warn = "󱅧",
+	Hint = "﮸",
+	Info = "",
+}
 
 return M
