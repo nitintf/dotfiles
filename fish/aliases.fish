@@ -54,8 +54,11 @@ alias code='open $argv -a "Visual Studio Code"'
 alias reloadapps="defaults write com.apple.dock ResetLaunchPad -bool true; killall Dock"
 
 # Misc
-alias l='exa --icons -F -H --group-directories-first --git -1'
-alias ll='exa --icons --long'
+alias l='lsd -F --group-directories-first'
+alias ll='lsd --long'
+alias ls='lsd'
+alias la='lsd -a'
+alias lla='lsd -la'
 alias etxt='extract-text'
 alias wifi='wifi-password'
 alias div='print_divider'
