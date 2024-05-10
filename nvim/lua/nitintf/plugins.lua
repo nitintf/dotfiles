@@ -23,7 +23,7 @@ return {
 		"goolord/alpha-nvim",
 		event = "VimEnter",
 		dependencies = { "nvim-tree/nvim-web-devicons" },
-		-- config = require("nitintf.plugins.alpha").setup,
+		config = require("nitintf.plugins.alpha").setup,
 	},
 
 	-- essentials
@@ -39,13 +39,6 @@ return {
 		version = "*",
 		event = "BufEnter",
 		config = require("nitintf.plugins.pounce").setup,
-	},
-
-	{
-		"xiyaowong/virtcolumn.nvim",
-		version = "*",
-		event = "BufEnter",
-		config = require("nitintf.plugins.virtcolumn").setup,
 	},
 
 	{
@@ -97,11 +90,6 @@ return {
 		"nvim-treesitter/nvim-treesitter-textobjects",
 		version = "*",
 		event = "BufEnter",
-	},
-
-	{
-		"nkrkv/nvim-treesitter-rescript",
-		version = "*",
 	},
 
 	-- lsp
