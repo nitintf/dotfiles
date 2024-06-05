@@ -36,6 +36,8 @@ brew install --cask arc
 brew install --cask kitty
 brew install --cask dbeaver-community
 brew install --cask obsidian
+brew install --cask zed
+brew install --cask todoist
 # brew install --cask omnidisksweeper
 # brew install --cask appcleaner
 
