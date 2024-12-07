@@ -30,7 +30,10 @@ fish_add_path /opt/homebrew/sbin
 fish_add_path "$HOME/.cargo/bin"
 fish_add_path "$HOME/.dotfiles/bin"
 fish_add_path "$HOME/.local/share/nvim/mason/bin"
-fish_add_path 
+fish_add_path "$HOME/.rvm/bin"
+fish_add_path "$HOME/.rvm/scripts/rvm"
+fish_add_path "/opt/homebrew/opt/openssl"
+fish_add_path "/opt/homebrew/opt/gmp"
 
 source $HOME/.config/fish/fzf.fish
 source $HOME/.config/fish/aliases.fish
@@ -48,3 +51,13 @@ if not string match -q -- $PNPM_HOME $PATH
   set -gx PATH "$PNPM_HOME" $PATH
 end
 # pnpm end
+
+# bun
+set --export BUN_INSTALL "$HOME/.bun"
+set --export PATH $BUN_INSTALL/bin $PATH
+
+# Added by `rbenv init` on Sun Sep  8 21:35:08 IST 2024
+export PATH="$HOME/.rbenv/bin:$PATH"
+status --is-interactive; and rbenv init - --no-rehash fish | source
+
+rvm use 3.0.3

@@ -40,6 +40,10 @@ brew install --cask zed
 brew install --cask todoist
 # brew install --cask omnidisksweeper
 # brew install --cask appcleaner
+brew install --cask itsycal
+# brew install --cask devtoys
+# brew install --cask alt-tab
+# brew install --cask hiddenbar
 
 # Redis
 brew install redis

@@ -10,6 +10,10 @@ return {
 		"sainnhe/everforest",
 		lazy = false,
 	},
+  {
+    "olimorris/onedarkpro.nvim",
+    priority = 1000, -- Ensure it loads first
+  },
 
 	-- keymaps
 	{

@@ -21,7 +21,6 @@ format = " took [ $duration]($style)"
 style = "bold" #white
 
 [time]
-disabled = false
 time_format = "%R" # Hour:Minute Format
 format = '[ ♥ $time ]($style)'
 
@@ -31,7 +30,7 @@ style = "bold #c678dd" #purple
 
 [git_branch]
 symbol = ""
-style = "bold #61afef"
+style = "bold #e31b1b"
 format = 'on[ $symbol $branch ]($style)'
 
 [git_commit]
@@ -43,14 +42,14 @@ format = '[\($state( $progress_current of $progress_total)\)]($style) '
 
 [git_status]
 format = '([\[$all_status$ahead_behind\]]($style) )'
-stashed = "[${count}*](green) " 
-modified = "[${count}+](yellow) " 
-deleted =  "[${count}-](red) " 
-conflicted =  "[${count}~](red) " 
+stashed = "[${count}*](style:'green') "
+modified = "[${count}+](style:'yellow') "
+deleted =  "[${count}-](style:'red') "
+conflicted =  "[${count}~](style:'red') "
 ahead = "⇡${count} "
 behind = "⇣${count} "
-untracked = "[${count}?](blue) " 
-staged = "[${count}+](green) "
+untracked = "[${count}?](style:'blue') "
+staged = "[${count}+](style:'green') "
 
 [java]
 symbol = " "
