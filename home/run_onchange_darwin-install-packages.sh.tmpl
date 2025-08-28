@@ -1,0 +1,38 @@
+{{ if eq .chezmoi.os "darwin" -}}
+#!/bin/bash
+
+set -e
+
+echo "🍺 Installing/updating Homebrew packages..."
+
+# Check if Homebrew is installed
+if ! command -v brew &> /dev/null; then
+    echo "Installing Homebrew..."
+    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+    
+    # Add Homebrew to PATH for Apple Silicon Macs
+    if [[ $(uname -m) == "arm64" ]]; then
+        echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' >> ~/.zprofile
+        eval "$(/opt/homebrew/bin/brew shellenv)"
+    fi
+fi
+
+# Update Homebrew
+brew update
+
+# Install packages using brew bundle
+echo "Installing packages from packages.yaml..."
+brew bundle --file=/dev/stdin <<EOF
+{{ range .packages.darwin.brews -}}
+brew {{ . | quote }}
+{{ end -}}
+{{ range .packages.darwin.casks -}}
+cask {{ . | quote }}
+{{ end -}}
+EOF
+
+# Clean up
+brew cleanup
+
+echo "✅ Package installation complete!"
+{{ end -}}
