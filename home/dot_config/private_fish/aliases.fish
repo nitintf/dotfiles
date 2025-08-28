@@ -16,6 +16,12 @@ alias dcsd='docker-compose -f docker-compose.dev.yml stop'
 alias dcup='docker-compose -f docker-compose.prod.yml up -d'
 alias dcsp='docker-compose -f docker-compose.prod.yml stop'
 
+# Chezmoi
+alias ch='chezmoi'
+alias cha='chezmoi add'
+alias chd='chezmoi diff'
+alias chs='chezmoi status'
+
 # Fish
 alias fi='fisher install'
 alias fl='fisher list'
