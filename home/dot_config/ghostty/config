@@ -1,0 +1,12 @@
+theme = Everforest Dark - Hard
+font-family = CaskaydiaCove Nerd Font
+font-thicken = true
+font-size = 14
+background-blur-radius = 20
+mouse-hide-while-typing = true
+window-decoration = true
+cursor-style = underline 
+cursor-style-blink = false
+background-opacity = 0.86
+macos-titlebar-style = transparent
+keybind = shift+enter=text:\n
