@@ -5,7 +5,8 @@ local Plugins = {
   {'numToStr/Comment.nvim', config = true, event = 'VeryLazy'},
 
   -- Themes
-  {'folke/tokyonight.nvim'},
+  -- {'folke/tokyonight.nvim'},
+	{'shaunsingh/nord.nvim'},
   -- {'tanvirtin/monokai.nvim'},
 }
 

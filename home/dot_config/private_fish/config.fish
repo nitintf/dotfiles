@@ -39,7 +39,7 @@ source $HOME/.config/fish/functions.fish
 
 if status is-interactive
   # load_env_vars ~/.env
-    starship init fish | source
+  starship init fish | source
   # source /opt/homebrew/opt/asdf/libexec/asdf.fish
 end
 
