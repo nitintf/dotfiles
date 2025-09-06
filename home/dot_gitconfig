@@ -1,0 +1,64 @@
+[include]
+    path = ~/.gitconfig-work
+
+# This will be applied when using github.com-ampd host  
+[includeIf "gitdir:~/code/nitintf/"]
+    path = ~/.gitconfig-personal
+
+[core]
+  # Global ignore file (not shared)
+  excludesfile = ~/.gitignore
+  whitespace = -trailing-space
+	editor = nvim
+	ignorecase = false
+[push]
+  default = simple
+[color]
+  status = auto
+  diff = auto
+  branch = auto
+  interactive = auto
+  grep = auto
+  ui = auto
+[alias]
+  # List available aliases
+  aliases = !git config --get-regexp alias | sed -re 's/alias\\.(\\S*)\\s(.*)$/\\1 = \\2/g'
+  # Command shortcuts
+  ci = commit
+  co = checkout
+  st = status
+	# List local commits that were not pushed to remote repository
+  review-local = "!git lg @{push}.."
+	 # Edit last commit message
+  reword = commit --amend
+	# Undo last commit but keep changed files in stage
+  uncommit = reset --soft HEAD~1
+  lg = log --graph --date=relative --pretty=tformat:'%Cred%h%Creset -%C(auto)%d%Creset %s %Cgreen(%an %ad)%Creset'
+	hist = log --pretty=format:\"%Cgreen%h %Creset%cd %Cblue[%cn] %Creset%s%C(yellow)%d%C(reset)\" --graph --date=relative --decorate --all
+	llog = log --graph --name-status --pretty=format:\"%C(red)%h %C(reset)(%cd) %C(green)%an %Creset%s %C(yellow)%d%Creset\" --date=relative
+[fetch]
+  # Auto-fetch submodule changes (sadly, won't auto-update)
+  recurseSubmodules = on-demand
+[grep]
+  break = true
+  heading = true
+  lineNumber = true
+  # Consider most regexes to be ERE
+  extendedRegexp = true
+[status]
+  # Display submodule rev change summaries in status
+  submoduleSummary = true
+  # Recursively traverse untracked directories to display all contents
+  showUntrackedFiles = all
+[color "branch"]
+  # Blue on black is hard to read in git branch -vv: use cyan instead
+  upstream = cyan
+	current = yellow bold
+	local = green bold
+	remote = cyan bold
+[tag]
+	sort = version:refname
+[push]
+	autoSetupRemote = true
+	followTags = true
+

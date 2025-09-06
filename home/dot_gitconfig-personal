@@ -1,0 +1,7 @@
+[user]
+    name = nitintf
+    email = nitinpanwar0802@gmail.com
+[core]
+		sshCommand = "ssh -i ~/.ssh/nitintf"
+[init]
+    defaultBranch = main
