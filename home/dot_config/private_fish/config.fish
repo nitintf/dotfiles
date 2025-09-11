@@ -53,3 +53,13 @@ end
 # bun
 set --export BUN_INSTALL "$HOME/.bun"
 set --export PATH $BUN_INSTALL/bin $PATH
+
+# Java for Expo dev - Android
+set -x JAVA_HOME /Library/Java/JavaVirtualMachines/zulu-17.jdk/Contents/Home
+
+# Android SDK
+set -x ANDROID_HOME $HOME/Library/Android/sdk
+
+# Add emulator & platform-tools to PATH
+fish_add_path $ANDROID_HOME/emulator
+fish_add_path $ANDROID_HOME/platform-tools
