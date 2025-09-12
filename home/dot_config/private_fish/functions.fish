@@ -62,3 +62,19 @@ end
 function col -d "Test if color is working"
     curl -s https://gist.githubusercontent.com/HaleTom/89ffe32783f89f403bba96bd7bcd1263/raw/e50a28ec54188d2413518788de6c6367ffcea4f7/print256colours.sh | bash
 end
+
+function emu
+    set avds (emulator -list-avds)
+
+    if test (count $argv) -eq 0
+        if test (count $avds) -gt 0
+            echo "Starting first emulator: $avds[1]"
+            nohup emulator -avd $avds[1] > /dev/null 2>&1 &
+        else
+            echo "No AVDs found. Create one using 'avdmanager create avd'."
+        end
+    else
+        echo "Starting emulator: $argv[1]"
+        nohup emulator -avd $argv[1] > /dev/null 2>&1 &
+    end
+end
