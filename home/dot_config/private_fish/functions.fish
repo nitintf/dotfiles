@@ -63,18 +63,36 @@ function col -d "Test if color is working"
     curl -s https://gist.githubusercontent.com/HaleTom/89ffe32783f89f403bba96bd7bcd1263/raw/e50a28ec54188d2413518788de6c6367ffcea4f7/print256colours.sh | bash
 end
 
-function emu
+function aemu -d "Start Android emulator (first or specific AVD)"
     set avds (emulator -list-avds)
 
     if test (count $argv) -eq 0
         if test (count $avds) -gt 0
-            echo "Starting first emulator: $avds[1]"
+            echo "📱 Starting first emulator: $avds[1]"
             nohup emulator -avd $avds[1] > /dev/null 2>&1 &
         else
-            echo "No AVDs found. Create one using 'avdmanager create avd'."
+            echo "❌ No AVDs found. Create one with 'avdmanager create avd'."
         end
     else
-        echo "Starting emulator: $argv[1]"
+        echo "📱 Starting emulator: $argv[1]"
         nohup emulator -avd $argv[1] > /dev/null 2>&1 &
+    end
+end
+
+function abuild -d "Build Android app locally with EAS and install on device"
+    # Ensure emulator/device is connected
+    if test (adb devices | grep -c 'device$') -eq 0
+        echo "⚠️  No device connected. Please run 'aemu' first."
+        return 1
+    end
+
+    # Run build
+    set last_build_apk (eas build --platform android --profile dev-local --local 2>&1 | tee /dev/tty | grep -o '/.*\.apk' | tail -n 1)
+
+    if test -n "$last_build_apk"
+        echo "✅ Build complete. Installing $last_build_apk ..."
+        adb install -r "$last_build_apk"
+    else
+        echo "❌ No APK found in build output."
     end
 end
