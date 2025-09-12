@@ -90,7 +90,10 @@ function abuild -d "Build Android app locally with EAS and install on device"
     set last_build_apk (eas build --platform android --profile dev-local --local 2>&1 | tee /dev/tty | grep -o '/.*\.apk' | tail -n 1)
 
     if test -n "$last_build_apk"
-        echo "✅ Build complete. Installing $last_build_apk ..."
+        set apk_name (basename $last_build_apk)
+        echo "✅ Build complete: $apk_name"
+        echo "📂 Location: $last_build_apk"
+        echo "📲 Installing on device..."
         adb install -r "$last_build_apk"
     else
         echo "❌ No APK found in build output."
