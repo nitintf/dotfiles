@@ -1,0 +1,7 @@
+[user]
+    name = {{ .personal.name | quote }}
+    email = {{ .personal.email | quote }}
+[core]
+    sshCommand = {{ .personal.sshCommand | quote }}
+[init]
+    defaultBranch = main

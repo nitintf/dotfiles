@@ -1,0 +1,34 @@
+{{/*
+Generated on `chezmoi init`. Prompts once per machine, writes the answers
+to ~/.config/chezmoi/chezmoi.toml. That file is NOT committed — it holds
+the per-machine values that the templates in this repo reference.
+*/}}
+
+{{- $isWork := promptBoolOnce . "isWork" "Is this a work machine?" false -}}
+
+{{- $personalName := promptStringOnce . "personal.name" "Personal git name" "nitintf" -}}
+{{- $personalEmail := promptStringOnce . "personal.email" "Personal git email" "nitinpanwar0802@gmail.com" -}}
+{{- $personalKey := promptStringOnce . "personal.key" "Path to personal SSH key" "~/.ssh/nitintf" -}}
+
+[git]
+    autoCommit = true
+    autoPush = true
+
+[data]
+    isWork = {{ $isWork }}
+
+[data.personal]
+    name       = {{ $personalName | quote }}
+    email      = {{ $personalEmail | quote }}
+    sshCommand = {{ printf "ssh -i %s" $personalKey | quote }}
+
+{{- if $isWork }}
+{{- $workName := promptStringOnce . "work.name" "Work git name" -}}
+{{- $workEmail := promptStringOnce . "work.email" "Work git email" -}}
+{{- $workKey := promptStringOnce . "work.key" "Path to work SSH key" "~/.ssh/work" }}
+
+[data.work]
+    name       = {{ $workName | quote }}
+    email      = {{ $workEmail | quote }}
+    sshCommand = {{ printf "ssh -i %s" $workKey | quote }}
+{{- end }}

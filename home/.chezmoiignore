@@ -6,3 +6,8 @@
 # OS noise
 .DS_Store
 **/.DS_Store
+
+# Skip work gitconfig on non-work machines
+{{- if not .isWork }}
+.gitconfig-work
+{{- end }}
