@@ -1,9 +1,13 @@
-# Starship — onedark pastel palette
+# Starship prompt — onedark pastel palette, expressive but calm.
 "$schema" = 'https://starship.rs/config-schema.json'
 
-# Left prompt: dir  on branch [status]  via lang  (duration)
-#              ❯
+# ─── Layout ─────────────────────────────────────────────────────────────────
+# Line 1:   os dir  on branch [status]  lang  docker  k8s  ────────  time
+# Line 2:   duration
+# Line 3:   ❯
+
 format = """
+$os\
 $directory\
 $git_branch\
 $git_status\
@@ -13,20 +17,31 @@ $python\
 $golang\
 $rust\
 $java\
-$docker_context\
+$custom\
 $kubernetes\
+$fill\
 $cmd_duration\
+$time\
 $line_break\
+$jobs\
+$battery\
 $character"""
 
-right_format = "$time"
 add_newline = true
 
 # ─── Palette (onedark) ──────────────────────────────────────────────────────
+# Defined inline below. Chosen hex values:
 #  green   #98c379   red    #e06c75   yellow #e5c07b
-#  blue    #61afef   cyan   #86BBD8   purple #c678dd
-#  gray    #5c6370
+#  blue    #61afef   cyan   #56b6c2   purple #c678dd
+#  orange #d19a66   gray   #5c6370   bg-gray #3e4452
 # ────────────────────────────────────────────────────────────────────────────
+
+[os]
+disabled = false
+style    = "bold #c678dd"
+[os.symbols]
+Macos = " "
+Linux = " "
 
 [character]
 success_symbol = "[❯](bold #98c379)"
@@ -34,16 +49,28 @@ error_symbol   = "[❯](bold #e06c75)"
 vimcmd_symbol  = "[❮](bold #98c379)"
 
 [directory]
-style             = "bold #c678dd"    # purple
-truncation_length = 3
+style             = "bold #c678dd"
+truncation_length = 4
 truncate_to_repo  = true
 read_only         = " "
 read_only_style   = "bold #e06c75"
 home_symbol       = "~"
+format            = "[$path]($style)[$read_only]($read_only_style) "
+[directory.substitutions]
+"Documents" = "󰈙 Docs"
+"Downloads" = " DL"
+"Music"     = " Music"
+"Pictures"  = " Pics"
+
+[fill]
+symbol = " "
+style  = "#3e4452"
+
+# ─── Git ────────────────────────────────────────────────────────────────────
 
 [git_branch]
 symbol = " "
-style  = "bold #e06c75"              # pastel red (was hard #e31b1b)
+style  = "fg:#e06c75"
 format = "on [$symbol$branch]($style) "
 
 [git_commit]
@@ -56,34 +83,50 @@ style  = "bold #c678dd"
 format = '\([$state( $progress_current/$progress_total)]($style)\) '
 
 [git_status]
-# Layout: [ ?3 !2 +1 »1 ✘1 $1 ⇡1⇣0 ]
 format         = '([\[$all_status$ahead_behind\]]($style) )'
-style          = "bold #e5c07b"      # yellow umbrella
-conflicted     = "[=${count}](bold #e06c75) "
-ahead          = "[⇡${count}](bold #98c379) "
-behind         = "[⇣${count}](bold #e5c07b) "
-diverged       = "[⇕⇡${ahead_count}⇣${behind_count}](bold #e06c75) "
+style          = "bold #e5c07b"
+conflicted     = "[=${count}](fg:#e06c75 bold) "
+ahead          = "[⇡${count}](fg:#98c379 bold) "
+behind         = "[⇣${count}](fg:#e5c07b bold) "
+diverged       = "[⇕⇡${ahead_count}⇣${behind_count}](fg:#e06c75 bold) "
 up_to_date     = ""
-untracked      = "[?${count}](bold #61afef) "
-stashed        = "[\\$${count}](bold #86BBD8) "
-modified       = "[!${count}](bold #e5c07b) "
-staged         = "[+${count}](bold #98c379) "
-renamed        = "[»${count}](bold #c678dd) "
-deleted        = "[✘${count}](bold #e06c75) "
+untracked      = "[?${count}](fg:#61afef bold) "
+stashed        = "[\\$${count}](fg:#56b6c2 bold) "
+modified       = "[!${count}](fg:#e5c07b bold) "
+staged         = "[+${count}](fg:#98c379 bold) "
+renamed        = "[»${count}](fg:#c678dd bold) "
+deleted        = "[✘${count}](fg:#e06c75 bold) "
+
+# ─── Right-hand side ────────────────────────────────────────────────────────
 
 [cmd_duration]
 min_time          = 2000
-format            = "took [ $duration]($style) "
-style             = "bold #5c6370"   # gray — less visual weight than before
+format            = "took [ $duration](fg:#5c6370 bold)  "
 show_milliseconds = false
 
 [time]
 disabled    = false
 time_format = "%R"
-format      = "[ $time ](bold #5c6370)"
+format      = "[ $time](fg:#5c6370)"
 
-# ─── Language / runtime badges ──────────────────────────────────────────────
-# Only show when relevant files are present (default behavior).
+[jobs]
+symbol   = "✦ "
+style    = "bold #61afef"
+format   = "[$symbol$number]($style) "
+number_threshold = 1
+
+[battery]
+full_symbol        = "🔋"
+charging_symbol    = "🔌"
+discharging_symbol = "⚡"
+[[battery.display]]
+threshold = 20
+style     = "bold #e06c75"
+[[battery.display]]
+threshold = 50
+style     = "bold #e5c07b"
+
+# ─── Languages (emoji — portable across fonts) ──────────────────────────────
 
 [nodejs]
 symbol         = "⬢ "
@@ -100,36 +143,42 @@ style  = "bold #e5c07b"
 [golang]
 symbol = "🐹 "
 format = "via [$symbol$version]($style) "
-style  = "bold #86BBD8"
+style  = "bold #56b6c2"
 
 [rust]
 symbol = "🦀 "
 format = "via [$symbol$version]($style) "
-style  = "bold #e06c75"
+style  = "bold #d19a66"
 
 [java]
 symbol = "☕ "
 format = "via [$symbol$version]($style) "
 style  = "bold #61afef"
 
-[docker_context]
-symbol          = "🐳 "
-format          = "via [$symbol$context]($style) "
-style           = "bold #61afef"
-only_with_files = true
-
 [kubernetes]
-disabled = false
-symbol   = "☸ "
-format   = "on [$symbol$context( \\($namespace\\))]($style) "
-style    = "bold #c678dd"
-# Only show on directories containing these (keeps prompt quiet outside k8s work)
-detect_files    = ["kustomization.yml", "kustomization.yaml", "Chart.yaml"]
-detect_folders  = [".kube"]
+disabled       = false
+symbol         = "☸ "
+format         = "on [$symbol$context( \\($namespace\\))]($style) "
+style          = "bold #c678dd"
+detect_files   = ["kustomization.yml", "kustomization.yaml", "Chart.yaml"]
+detect_folders = [".kube"]
 
-# ─── Disabled: modules that pollute the prompt ──────────────────────────────
-# Starship default-enables a long list of language/tool modules. Keep only the
-# ones we actually want.
+# ─── Custom: docker-presence (built-in docker_context needs daemon + CWD only)
+[custom.docker]
+description  = "Docker emoji when a Dockerfile or compose file is in the current directory"
+symbol       = "🐳"
+detect_files = [
+  "Dockerfile",
+  "docker-compose.yml",
+  "docker-compose.yaml",
+  "compose.yml",
+  "compose.yaml",
+  "Dockerfile.dev",
+]
+command      = "echo"
+format       = "[$symbol ](bold #61afef) "
+
+# ─── Disabled: noisy modules ────────────────────────────────────────────────
 [package]
 disabled = true
 
@@ -169,13 +218,6 @@ disabled = true
 [terraform]
 disabled = true
 
-[battery]
-full_symbol        = "🔋"
-charging_symbol    = "🔌"
-discharging_symbol = "⚡"
-[[battery.display]]
-threshold = 20
-style     = "bold #e06c75"
-[[battery.display]]
-threshold = 50
-style     = "bold #e5c07b"
+# Replaced by [custom.docker] above
+[docker_context]
+disabled = true
