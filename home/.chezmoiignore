@@ -3,6 +3,9 @@
 # Work-only / machine-local (never track in this public repo)
 .config/fish/conf.d/work-local.fish
 
+# Fish universal-variable store — runtime state, per-machine, fish rewrites it
+.config/fish/fish_variables
+
 # Secrets — auth tokens, keys
 .config/gh/hosts.yml
 .config/op/**
