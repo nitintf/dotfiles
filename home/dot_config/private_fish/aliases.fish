@@ -62,7 +62,7 @@ alias copyssh='pbcopy < ~/.ssh/$1'
 # Neovim / Vim
 alias v='nvim'
 alias vi='nvim'
-alias vim='/opt/homebrew/bin/vim'
+alias vim='nvim'
 
 # Python
 alias jup='jupyter notebook'
