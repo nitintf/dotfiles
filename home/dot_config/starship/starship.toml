@@ -86,56 +86,87 @@ format      = "[ $time ](bold #5c6370)"
 # Only show when relevant files are present (default behavior).
 
 [nodejs]
-symbol         = " "
+symbol         = "⬢ "
 format         = "via [$symbol$version]($style) "
 style          = "bold #98c379"
 detect_files   = ["package.json", ".node-version", ".nvmrc"]
 detect_folders = ["node_modules"]
 
 [python]
-symbol = " "
+symbol = "🐍 "
 format = "via [$symbol$version( \\($virtualenv\\))]($style) "
 style  = "bold #e5c07b"
 
 [golang]
-symbol = " "
+symbol = "🐹 "
 format = "via [$symbol$version]($style) "
 style  = "bold #86BBD8"
 
 [rust]
-symbol = " "
+symbol = "🦀 "
 format = "via [$symbol$version]($style) "
 style  = "bold #e06c75"
 
 [java]
-symbol = " "
+symbol = "☕ "
 format = "via [$symbol$version]($style) "
 style  = "bold #61afef"
 
 [docker_context]
-symbol = " "
-format = "via [$symbol$context]($style) "
-style  = "bold #61afef"
+symbol          = "🐳 "
+format          = "via [$symbol$context]($style) "
+style           = "bold #61afef"
 only_with_files = true
 
 [kubernetes]
 disabled = false
-symbol   = "󱃾 "
+symbol   = "☸ "
 format   = "on [$symbol$context( \\($namespace\\))]($style) "
 style    = "bold #c678dd"
 # Only show on directories containing these (keeps prompt quiet outside k8s work)
 detect_files    = ["kustomization.yml", "kustomization.yaml", "Chart.yaml"]
 detect_folders  = [".kube"]
 
+# ─── Disabled: modules that pollute the prompt ──────────────────────────────
+# Starship default-enables a long list of language/tool modules. Keep only the
+# ones we actually want.
 [package]
-symbol   = " "
-style    = "bold #e06c75"
-disabled = true   # usually noise — enable per-project if you want it
+disabled = true
+
+[dotnet]
+disabled = true
+
+[nix_shell]
+disabled = true
+
+[ruby]
+disabled = true
+
+[php]
+disabled = true
+
+[perl]
+disabled = true
 
 [aws]
 disabled = true
 
+[gcloud]
+disabled = true
+
+[azure]
+disabled = true
+
 [lua]
+disabled = true
+
+[conda]
+disabled = true
+
+[pulumi]
+disabled = true
+
+[terraform]
 disabled = true
 
 [battery]
