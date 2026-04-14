@@ -1,0 +1,14 @@
+# External dependencies — chezmoi downloads these and refreshes periodically.
+# Handy for tools that don't ship via brew: plugin managers, scripts, etc.
+
+[".config/tmux/plugins/tpm"]
+    type = "git-repo"
+    url = "https://github.com/tmux-plugins/tpm.git"
+    refreshPeriod = "168h"
+    [".config/tmux/plugins/tpm".clone]
+        args = ["--depth", "1"]
+    [".config/tmux/plugins/tpm".pull]
+        args = ["--ff-only"]
+
+# Note: fisher itself is installed by run_once_after_install-fisher-plugins.sh.tmpl
+# (conflict with tracked copy in dot_config/private_fish/functions/fisher.fish).

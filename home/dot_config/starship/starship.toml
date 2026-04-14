@@ -1,102 +1,150 @@
-# Get editor completions based on the config schema
+# Starship — onedark pastel palette
 "$schema" = 'https://starship.rs/config-schema.json'
 
-right_format = "$time$cmd_duration"
+# Left prompt: dir  on branch [status]  via lang  (duration)
+#              ❯
+format = """
+$directory\
+$git_branch\
+$git_status\
+$git_state\
+$nodejs\
+$python\
+$golang\
+$rust\
+$java\
+$docker_context\
+$kubernetes\
+$cmd_duration\
+$line_break\
+$character"""
 
-[battery]
-full_symbol = "🔋"
-charging_symbol = "🔌"
-discharging_symbol = "⚡"
+right_format = "$time"
+add_newline = true
 
-[[battery.display]]
-threshold = 30
-style = "bold red"
+# ─── Palette (onedark) ──────────────────────────────────────────────────────
+#  green   #98c379   red    #e06c75   yellow #e5c07b
+#  blue    #61afef   cyan   #86BBD8   purple #c678dd
+#  gray    #5c6370
+# ────────────────────────────────────────────────────────────────────────────
 
 [character]
-success_symbol = "[➜](bold #98c379)" #green
-error_symbol = "[➜](bold #e06c75)" #red
-
-[cmd_duration]
-format = " took [ $duration]($style)"
-style = "bold" #white
-
-[time]
-time_format = "%R" # Hour:Minute Format
-format = '[ ♥ $time ]($style)'
+success_symbol = "[❯](bold #98c379)"
+error_symbol   = "[❯](bold #e06c75)"
+vimcmd_symbol  = "[❮](bold #98c379)"
 
 [directory]
-read_only = " "
-style = "bold #c678dd" #purple
+style             = "bold #c678dd"    # purple
+truncation_length = 3
+truncate_to_repo  = true
+read_only         = " "
+read_only_style   = "bold #e06c75"
+home_symbol       = "~"
 
 [git_branch]
-symbol = ""
-style = "bold #e31b1b"
-format = 'on[ $symbol $branch ]($style)'
+symbol = " "
+style  = "bold #e06c75"              # pastel red (was hard #e31b1b)
+format = "on [$symbol$branch]($style) "
 
 [git_commit]
-commit_hash_length = 8
-style = "bold white"
+commit_hash_length = 7
+style              = "bold #e5c07b"
+tag_symbol         = "  "
 
 [git_state]
-format = '[\($state( $progress_current of $progress_total)\)]($style) '
+style  = "bold #c678dd"
+format = '\([$state( $progress_current/$progress_total)]($style)\) '
 
 [git_status]
-format = '([\[$all_status$ahead_behind\]]($style) )'
-stashed = "[${count}*](style:'green') "
-modified = "[${count}+](style:'yellow') "
-deleted =  "[${count}-](style:'red') "
-conflicted =  "[${count}~](style:'red') "
-ahead = "⇡${count} "
-behind = "⇣${count} "
-untracked = "[${count}?](style:'blue') "
-staged = "[${count}+](style:'green') "
+# Layout: [ ?3 !2 +1 »1 ✘1 $1 ⇡1⇣0 ]
+format         = '([\[$all_status$ahead_behind\]]($style) )'
+style          = "bold #e5c07b"      # yellow umbrella
+conflicted     = "[=${count}](bold #e06c75) "
+ahead          = "[⇡${count}](bold #98c379) "
+behind         = "[⇣${count}](bold #e5c07b) "
+diverged       = "[⇕⇡${ahead_count}⇣${behind_count}](bold #e06c75) "
+up_to_date     = ""
+untracked      = "[?${count}](bold #61afef) "
+stashed        = "[\\$${count}](bold #86BBD8) "
+modified       = "[!${count}](bold #e5c07b) "
+staged         = "[+${count}](bold #98c379) "
+renamed        = "[»${count}](bold #c678dd) "
+deleted        = "[✘${count}](bold #e06c75) "
 
-[java]
-symbol = " "
-style = "bold #61afef" #blue
+[cmd_duration]
+min_time          = 2000
+format            = "took [ $duration]($style) "
+style             = "bold #5c6370"   # gray — less visual weight than before
+show_milliseconds = false
 
-[nix_shell]
-symbol = " "
-style = "bold #61afef" #blue
-impure_msg = " [impure](bold #e06c75)"
-pure_msg = " [pure](bold)"
+[time]
+disabled    = false
+time_format = "%R"
+format      = "[ $time ](bold #5c6370)"
+
+# ─── Language / runtime badges ──────────────────────────────────────────────
+# Only show when relevant files are present (default behavior).
 
 [nodejs]
-symbol = ""
-format = 'via[ $symbol ($version) ]($style)'
-style = "bold #98c379" #green
-detect_files = ["package.json", ".node-version"]
+symbol         = " "
+format         = "via [$symbol$version]($style) "
+style          = "bold #98c379"
+detect_files   = ["package.json", ".node-version", ".nvmrc"]
 detect_folders = ["node_modules"]
 
-[rust]
-symbol = ""
-style = "bold #86BBD8"
-format = '[ $symbol ($version) ]($style)'
-
-[package]
-style = "bold #e06c75" #red
-
 [python]
-symbol = " "
-format = 'via[ $symbol ($version) ]($style)'
-style = "bold #e5c07b" #yellow
-
-[docker_context]
-symbol = " "
-format = '[ $symbol $context ]($style) $path'
+symbol = " "
+format = "via [$symbol$version( \\($virtualenv\\))]($style) "
+style  = "bold #e5c07b"
 
 [golang]
-symbol = " "
-format = 'via[ $symbol ($version) ]($style)'
+symbol = " "
+format = "via [$symbol$version]($style) "
+style  = "bold #86BBD8"
 
-[ruby]
-symbol = " "
-style = "bold #e06c75" #red
+[rust]
+symbol = " "
+format = "via [$symbol$version]($style) "
+style  = "bold #e06c75"
+
+[java]
+symbol = " "
+format = "via [$symbol$version]($style) "
+style  = "bold #61afef"
+
+[docker_context]
+symbol = " "
+format = "via [$symbol$context]($style) "
+style  = "bold #61afef"
+only_with_files = true
+
+[kubernetes]
+disabled = false
+symbol   = "󱃾 "
+format   = "on [$symbol$context( \\($namespace\\))]($style) "
+style    = "bold #c678dd"
+# Only show on directories containing these (keeps prompt quiet outside k8s work)
+detect_files    = ["kustomization.yml", "kustomization.yaml", "Chart.yaml"]
+detect_folders  = [".kube"]
+
+[package]
+symbol   = " "
+style    = "bold #e06c75"
+disabled = true   # usually noise — enable per-project if you want it
 
 [aws]
 disabled = true
-symbol = "  "
 
 [lua]
 disabled = true
 
+[battery]
+full_symbol        = "🔋"
+charging_symbol    = "🔌"
+discharging_symbol = "⚡"
+[[battery.display]]
+threshold = 20
+style     = "bold #e06c75"
+[[battery.display]]
+threshold = 50
+style     = "bold #e5c07b"

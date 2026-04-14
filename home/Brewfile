@@ -1,0 +1,50 @@
+# Homebrew Bundle — https://github.com/Homebrew/homebrew-bundle
+# Install/update with: brew bundle --file=~/Brewfile
+# Prune packages not listed: brew bundle cleanup --file=~/Brewfile --force
+
+# Shell / core CLI
+brew "fish"
+brew "git"
+brew "gh"
+brew "lazygit"
+brew "fzf"
+brew "starship"
+brew "tmux"
+brew "neovim"
+
+# File tooling
+brew "bat"
+brew "lsd"
+brew "fd"
+brew "ripgrep"
+brew "jq"
+brew "zoxide"
+
+# System / networking
+brew "htop"
+brew "wget"
+brew "curl"
+brew "unzip"
+brew "tldr"
+brew "neofetch"
+
+# Languages / runtimes
+brew "node"
+brew "pnpm"
+brew "python"
+brew "go"
+
+# GUI apps
+cask "cursor"
+cask "iterm2"
+cask "rectangle"
+cask "raycast"
+cask "appcleaner"
+cask "dbeaver-community"
+cask "obsidian"
+cask "zen"
+cask "spotify"
+cask "slack"
+cask "docker"
+cask "postman"
+cask "1password-cli"

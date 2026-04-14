@@ -1,0 +1,31 @@
+{{ if eq .chezmoi.os "darwin" -}}
+#!/bin/bash
+# Install fisher (fish plugin manager) and plugins from ~/.config/fish/fish_plugins.
+# Runs once per machine (hash re-triggers on fish_plugins change).
+set -euo pipefail
+
+# Ensure brew-installed tools (fish) are on PATH even if the current shell
+# pre-dates brew installation.
+if [ -x /opt/homebrew/bin/brew ]; then
+  eval "$(/opt/homebrew/bin/brew shellenv)"
+elif [ -x /usr/local/bin/brew ]; then
+  eval "$(/usr/local/bin/brew shellenv)"
+fi
+
+if ! command -v fish >/dev/null 2>&1; then
+  echo "⚠️  fish not installed — skipping fisher bootstrap."
+  exit 0
+fi
+
+# Bootstrap fisher if missing
+if ! fish -c 'type -q fisher' 2>/dev/null; then
+  echo "🎣 Installing fisher..."
+  fish -c 'curl -sL https://raw.githubusercontent.com/jorgebucaran/fisher/main/functions/fisher.fish | source && fisher install jorgebucaran/fisher'
+fi
+
+echo "🎣 Syncing fisher plugins from fish_plugins..."
+fish -c 'fisher update'
+echo "✅ fisher and plugins installed."
+
+# plugins hash pin: {{ include "dot_config/private_fish/fish_plugins" | sha256sum }}
+{{ end -}}

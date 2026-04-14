@@ -1,0 +1,32 @@
+{{ if eq .chezmoi.os "darwin" -}}
+#!/bin/bash
+# Reinstalls packages when Brewfile content changes (hash is tracked by chezmoi).
+set -euo pipefail
+
+# Ensure brew is on PATH even if installed in a parallel script.
+if [ -x /opt/homebrew/bin/brew ]; then
+  eval "$(/opt/homebrew/bin/brew shellenv)"
+elif [ -x /usr/local/bin/brew ]; then
+  eval "$(/usr/local/bin/brew shellenv)"
+fi
+
+if ! command -v brew >/dev/null 2>&1; then
+  echo "❌ brew not found. run_once_before_install-brew.sh should have installed it — re-run 'chezmoi apply'."
+  exit 1
+fi
+
+BREWFILE="{{ .chezmoi.homeDir }}/Brewfile"
+echo "📦 Syncing packages from $BREWFILE..."
+
+brew update
+brew bundle install --file="$BREWFILE"
+
+# Uncomment to also *remove* packages no longer listed in Brewfile.
+# Commented out by default — safer to review what would be removed first:
+#   brew bundle cleanup --file="$BREWFILE"
+# then run with --force to actually remove.
+# brew bundle cleanup --file="$BREWFILE" --force
+
+brew cleanup
+echo "✅ Packages synced — hash: {{ include "Brewfile" | sha256sum }}"
+{{ end -}}
