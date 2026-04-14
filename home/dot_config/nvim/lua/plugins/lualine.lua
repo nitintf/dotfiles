@@ -5,7 +5,7 @@ Plugin.event = 'VeryLazy'
 -- See :help lualine.txt
 Plugin.opts = {
   options = {
-    theme = 'nord',
+    theme = 'tokyonight',
     icons_enabled = true,
     component_separators = '|',
     section_separators = '',

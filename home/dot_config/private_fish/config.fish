@@ -63,3 +63,7 @@ set -x ANDROID_HOME $HOME/Library/Android/sdk
 # Add emulator & platform-tools to PATH
 fish_add_path $ANDROID_HOME/emulator
 fish_add_path $ANDROID_HOME/platform-tools
+export PATH="$HOME/.local/bin:$PATH"
+
+# Added by Antigravity
+fish_add_path /Users/nitinpanwar/.antigravity/antigravity/bin

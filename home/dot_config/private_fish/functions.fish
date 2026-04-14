@@ -79,22 +79,40 @@ function aemu -d "Start Android emulator (first or specific AVD)"
     end
 end
 
-function abuild -d "Build Android app locally with EAS and install on device"
-    # Ensure emulator/device is connected
-    if test (adb devices | grep -c 'device$') -eq 0
-        echo "⚠️  No device connected. Please run 'aemu' first."
-        return 1
+function abuild -d "Build Android app locally with EAS and optionally install on device"
+    set profile "dev-local"
+    set install_flag 0
+
+    # Parse arguments
+    for arg in $argv
+        switch $arg
+            case "--profile=*"
+                set profile (string split "=" $arg)[2]
+            case "--install"
+                set install_flag 1
+        end
     end
 
-    # Run build
-    set last_build_apk (eas build --platform android --profile dev-local --local 2>&1 | tee /dev/tty | grep -o '/.*\.apk' | tail -n 1)
+    if test $install_flag -eq 1
+        # Ensure emulator/device is connected
+        if test (adb devices | grep -c 'device$') -eq 0
+            echo "⚠️  No device connected. Please run 'aemu' first."
+            return 1
+        end
+    end
+
+    echo "🚀 Building Android app with profile: $profile"
+    set last_build_apk (eas build --platform android --profile $profile --local 2>&1 | tee /dev/tty | grep -o '/.*\.apk' | tail -n 1)
 
     if test -n "$last_build_apk"
         set apk_name (basename $last_build_apk)
         echo "✅ Build complete: $apk_name"
         echo "📂 Location: $last_build_apk"
-        echo "📲 Installing on device..."
-        adb install -r "$last_build_apk"
+
+        if test $install_flag -eq 1
+            echo "📲 Installing on device..."
+            adb install -r "$last_build_apk"
+        end
     else
         echo "❌ No APK found in build output."
     end

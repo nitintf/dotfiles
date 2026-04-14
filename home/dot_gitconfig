@@ -1,7 +1,8 @@
-[include]
+# Work identity when inside ~/code/work/
+[includeIf "gitdir:~/code/work/"]
     path = ~/.gitconfig-work
 
-# This will be applied when using github.com-ampd host  
+# Personal identity when inside ~/code/nitintf/
 [includeIf "gitdir:~/code/nitintf/"]
     path = ~/.gitconfig-personal
 
@@ -62,3 +63,8 @@
 	autoSetupRemote = true
 	followTags = true
 
+[filter "lfs"]
+	process = git-lfs filter-process
+	required = true
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f

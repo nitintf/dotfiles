@@ -8,4 +8,4 @@ load('core.commands')
 load('core.keymaps')
 require('core.plugins')
 
-pcall(vim.cmd.colorscheme, 'nord')
+pcall(vim.cmd.colorscheme, 'tokyonight-night')
