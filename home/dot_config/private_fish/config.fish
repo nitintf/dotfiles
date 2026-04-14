@@ -37,6 +37,9 @@ source $HOME/.config/fish/fzf.fish
 source $HOME/.config/fish/aliases.fish
 source $HOME/.config/fish/functions.fish
 
+# Starship reads config from $STARSHIP_CONFIG; keep the file under ~/.config/starship/
+set -gx STARSHIP_CONFIG "$HOME/.config/starship/starship.toml"
+
 if status is-interactive
   # load_env_vars ~/.env
   starship init fish | source
