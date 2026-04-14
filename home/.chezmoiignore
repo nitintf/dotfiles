@@ -1,1 +1,8 @@
 .config/raycast
+
+# Work-only / machine-local files (never track in this public repo)
+.config/fish/conf.d/work-local.fish
+
+# OS noise
+.DS_Store
+**/.DS_Store
