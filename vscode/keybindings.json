@@ -1,0 +1,20 @@
+// Profile keybindings — vscode-neovim + VSpaceCode which-key
+[
+    // Open the which-key leader menu with <space> in normal/visual mode
+    {
+        "key": "space",
+        "command": "whichkey.show",
+        "when": "editorTextFocus && neovim.mode == 'normal'"
+    },
+    {
+        "key": "space",
+        "command": "whichkey.show",
+        "when": "editorTextFocus && neovim.mode == 'visual'"
+    },
+    // Let <space> work normally in lists/trees/search too (optional convenience)
+    {
+        "key": "space",
+        "command": "whichkey.show",
+        "when": "sideBarFocus && !inputFocus"
+    }
+]

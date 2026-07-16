@@ -19,3 +19,13 @@ This repository uses [chezmoi](https://www.chezmoi.io/) for dotfile management. 
    chezmoi init nitintf
    chezmoi apply
    ```
+
+## VS Code
+
+The "Nitin's setup" VS Code profile (settings, keybindings, extensions) lives in [`vscode/`](vscode/) and is applied separately from chezmoi:
+
+```sh
+./vscode/apply.sh
+```
+
+See [vscode/README.md](vscode/README.md) for details.
