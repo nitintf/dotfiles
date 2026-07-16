@@ -1,11 +1,18 @@
 theme = Everforest Dark Hard
-font-family = CaskaydiaCove Nerd Font
-font-thicken = true
+
+# Primary font, then Symbols Nerd Font Mono as a deterministic fallback for
+# PUA glyphs. On macOS, system fonts claim PUA ranges with empty glyphs and
+# win Ghostty's fallback race — stacking Symbols Nerd Font Mono fixes that.
+# (font-codepoint-map has a 1.3.x regression and should NOT be used here.)
+font-family = JetBrainsMono Nerd Font Mono
+font-family = Symbols Nerd Font Mono
 font-size = 14
+font-thicken = true
+
 background-blur-radius = 20
 mouse-hide-while-typing = true
 window-decoration = true
-cursor-style = underline 
+cursor-style = underline
 cursor-style-blink = false
 background-opacity = 0.86
 macos-titlebar-style = transparent

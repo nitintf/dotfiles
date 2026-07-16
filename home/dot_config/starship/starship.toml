@@ -1,13 +1,17 @@
-# Starship prompt — onedark pastel palette, expressive but calm.
+# Starship prompt — Catppuccin Macchiato pastel palette.
+# Icons: emoji + standard Unicode only — NO Nerd Font PUA glyphs. Confirmed
+# 2026-07-16 on Ghostty 1.3.1: `ghostty +show-face --cp=0xE718` resolves the
+# glyph to JetBrainsMono Nerd Font Mono, but the renderer still draws PUA
+# blank in shell output (renderer bug, not fonts/config). 1.3.1 is the latest
+# release; when a fixed Ghostty ships, PUA glyphs can replace these emoji.
 "$schema" = 'https://starship.rs/config-schema.json'
 
 # ─── Layout ─────────────────────────────────────────────────────────────────
-# Line 1:   os dir  on branch [status]  lang  docker  k8s  ────────  time
-# Line 2:   duration
-# Line 3:   ❯
+# Line 1 (left):   os dir  on branch  (git-status)  lang  custom  k8s
+# Line 1 (right):                                        cmd_duration   time
+# Line 2:          ❯
 
 format = """
-$os\
 $directory\
 $git_branch\
 $git_status\
@@ -24,149 +28,150 @@ $cmd_duration\
 $time\
 $line_break\
 $jobs\
-$battery\
 $character"""
 
 add_newline = true
+palette     = "catppuccin_macchiato"
 
-# ─── Palette (onedark) ──────────────────────────────────────────────────────
-# Defined inline below. Chosen hex values:
-#  green   #98c379   red    #e06c75   yellow #e5c07b
-#  blue    #61afef   cyan   #56b6c2   purple #c678dd
-#  orange #d19a66   gray   #5c6370   bg-gray #3e4452
-# ────────────────────────────────────────────────────────────────────────────
+# ─── Palette ────────────────────────────────────────────────────────────────
+[palettes.catppuccin_macchiato]
+rosewater = "#f4dbd6"
+flamingo  = "#f0c6c6"
+pink      = "#f5bde6"
+mauve     = "#c6a0f6"
+red       = "#ed8796"
+maroon    = "#ee99a0"
+peach     = "#f5a97f"
+yellow    = "#eed49f"
+green     = "#a6da95"
+teal      = "#8bd5ca"
+sky       = "#91d7e3"
+sapphire  = "#7dc4e4"
+blue      = "#8aadf4"
+lavender  = "#b7bdf8"
+text      = "#cad3f5"
+subtext1  = "#b8c0e0"
+subtext0  = "#a5adcb"
+overlay2  = "#939ab7"
+overlay1  = "#8087a2"
+overlay0  = "#6e738d"
+surface2  = "#5b6078"
+surface1  = "#494d64"
+surface0  = "#363a4e"
 
-[os]
-disabled = false
-style    = "bold #c678dd"
-[os.symbols]
-Macos = " "
-Linux = " "
-
+# ─── Character ──────────────────────────────────────────────────────────────
 [character]
-success_symbol = "[❯](bold #98c379)"
-error_symbol   = "[❯](bold #e06c75)"
-vimcmd_symbol  = "[❮](bold #98c379)"
+success_symbol = "[❯](bold green)"
+error_symbol   = "[❯](bold red)"
+vimcmd_symbol  = "[❮](bold green)"
 
+# ─── Directory ──────────────────────────────────────────────────────────────
 [directory]
-style             = "bold #c678dd"
-truncation_length = 4
+style             = "bold lavender"
+truncation_length = 3
 truncate_to_repo  = true
-read_only         = " "
-read_only_style   = "bold #e06c75"
+read_only         = " ⊘"
+read_only_style   = "bold red"
 home_symbol       = "~"
 format            = "[$path]($style)[$read_only]($read_only_style) "
-[directory.substitutions]
-"Documents" = "󰈙 Docs"
-"Downloads" = " DL"
-"Music"     = " Music"
-"Pictures"  = " Pics"
-
-[fill]
-symbol = " "
-style  = "#3e4452"
 
 # ─── Git ────────────────────────────────────────────────────────────────────
-
 [git_branch]
-symbol = " "
-style  = "fg:#e06c75"
-format = "on [$symbol$branch]($style) "
+symbol = "⎇ "
+style  = "bold pink"
+format = "[on ](subtext0)[$symbol$branch]($style) "
 
 [git_commit]
 commit_hash_length = 7
-style              = "bold #e5c07b"
-tag_symbol         = "  "
+style              = "bold yellow"
+tag_symbol         = " ⚐ "
 
 [git_state]
-style  = "bold #c678dd"
+style  = "bold mauve"
 format = '\([$state( $progress_current/$progress_total)]($style)\) '
 
+# Git status — git-style single-letter indicators, wrapped in parens.
+#   M modified   A added/staged   D deleted   R renamed   ? untracked
+#   * stashed    ! conflict       ⇡ ahead     ⇣ behind    ⇕ diverged
 [git_status]
-format         = '([\[$all_status$ahead_behind\]]($style) )'
-style          = "bold #e5c07b"
-conflicted     = "[=${count}](fg:#e06c75 bold) "
-ahead          = "[⇡${count}](fg:#98c379 bold) "
-behind         = "[⇣${count}](fg:#e5c07b bold) "
-diverged       = "[⇕⇡${ahead_count}⇣${behind_count}](fg:#e06c75 bold) "
-up_to_date     = ""
-untracked      = "[?${count}](fg:#61afef bold) "
-stashed        = "[\\$${count}](fg:#56b6c2 bold) "
-modified       = "[!${count}](fg:#e5c07b bold) "
-staged         = "[+${count}](fg:#98c379 bold) "
-renamed        = "[»${count}](fg:#c678dd bold) "
-deleted        = "[✘${count}](fg:#e06c75 bold) "
+format     = '([\($all_status$ahead_behind\)]($style) )'
+style      = "bold yellow"
+conflicted = "[!$count](red) "
+ahead      = "[⇡$count](green) "
+behind     = "[⇣$count](yellow) "
+diverged   = "[⇕⇡$ahead_count⇣$behind_count](red) "
+up_to_date = ""
+untracked  = "[?$count](sky) "
+stashed    = "[*$count](teal) "
+modified   = "[M$count](peach) "
+staged     = "[A$count](green) "
+renamed    = "[R$count](mauve) "
+deleted    = "[D$count](red) "
 
-# ─── Right-hand side ────────────────────────────────────────────────────────
+# ─── Fill (pushes right-side modules to the right edge) ─────────────────────
+[fill]
+symbol = " "
+style  = "surface1"
 
+# ─── Right-hand side (on line 1 via $fill) ──────────────────────────────────
 [cmd_duration]
 min_time          = 2000
-format            = "took [ $duration](fg:#5c6370 bold)  "
+format            = "[took $duration](overlay1)  "
 show_milliseconds = false
 
 [time]
 disabled    = false
 time_format = "%R"
-format      = "[ $time](fg:#5c6370)"
+format      = "[$time](subtext0)"
 
 [jobs]
-symbol   = "✦ "
-style    = "bold #61afef"
-format   = "[$symbol$number]($style) "
+symbol           = "✦ "
+style            = "bold blue"
+format           = "[$symbol$number]($style) "
 number_threshold = 1
 
 [battery]
-full_symbol        = "🔋"
-charging_symbol    = "🔌"
-discharging_symbol = "⚡"
-[[battery.display]]
-threshold = 20
-style     = "bold #e06c75"
-[[battery.display]]
-threshold = 50
-style     = "bold #e5c07b"
+disabled = true
 
-# ─── Languages (emoji — portable across fonts) ──────────────────────────────
-
+# ─── Languages (emoji / standard Unicode — Ghostty 1.3.1 can't render PUA) ──
 [nodejs]
 symbol         = "⬢ "
-format         = "via [$symbol$version]($style) "
-style          = "bold #98c379"
+format         = " [via $symbol$version](bold green)"
+style          = "bold green"
 detect_files   = ["package.json", ".node-version", ".nvmrc"]
 detect_folders = ["node_modules"]
 
 [python]
 symbol = "🐍 "
-format = "via [$symbol$version( \\($virtualenv\\))]($style) "
-style  = "bold #e5c07b"
+format = " [via $symbol$version( \\($virtualenv\\))](bold yellow)"
+style  = "bold yellow"
 
 [golang]
 symbol = "🐹 "
-format = "via [$symbol$version]($style) "
-style  = "bold #56b6c2"
+format = " [via $symbol$version](bold teal)"
+style  = "bold teal"
 
 [rust]
 symbol = "🦀 "
-format = "via [$symbol$version]($style) "
-style  = "bold #d19a66"
+format = " [via $symbol$version](bold peach)"
+style  = "bold peach"
 
 [java]
 symbol = "☕ "
-format = "via [$symbol$version]($style) "
-style  = "bold #61afef"
+format = " [via $symbol$version](bold blue)"
+style  = "bold blue"
 
 [kubernetes]
 disabled       = false
 symbol         = "☸ "
-format         = "on [$symbol$context( \\($namespace\\))]($style) "
-style          = "bold #c678dd"
+format         = " [on ](subtext0)[$symbol$context( \\($namespace\\))](bold mauve)"
+style          = "bold mauve"
 detect_files   = ["kustomization.yml", "kustomization.yaml", "Chart.yaml"]
 detect_folders = [".kube"]
 
-# ─── Custom: docker-presence (built-in docker_context needs daemon + CWD only)
+# ─── Custom modules ─────────────────────────────────────────────────────────
 [custom.docker]
-description  = "Docker emoji when a Dockerfile or compose file is in the current directory"
-symbol       = "🐳"
+description  = "Docker project indicator"
 detect_files = [
   "Dockerfile",
   "docker-compose.yml",
@@ -175,49 +180,71 @@ detect_files = [
   "compose.yaml",
   "Dockerfile.dev",
 ]
+command = "echo"
+format  = " [🐳 docker](sapphire)"
+
+[custom.nx]
+description  = "Nx monorepo indicator"
+detect_files = ["nx.json"]
 command      = "echo"
-format       = "[$symbol ](bold #61afef) "
+format       = " [nx](bold blue)"
+
+[custom.biome]
+description  = "Biome formatter/linter"
+detect_files = ["biome.json", "biome.jsonc", "biome.base.json"]
+command      = "echo"
+format       = " [biome](green)"
+
+[custom.pnpm]
+description  = "pnpm workspace"
+detect_files = ["pnpm-workspace.yaml"]
+command      = "echo"
+format       = " [pnpm](peach)"
+
+[custom.bun]
+description  = "Bun runtime"
+detect_files = ["bun.lockb", "bun.lock", "bunfig.toml"]
+command      = "echo"
+format       = " [bun](yellow)"
+
+[custom.uv]
+description  = "uv python env (astral-sh/uv)"
+detect_files = ["uv.lock"]
+command      = "echo"
+format       = " [uv](mauve)"
+
+[custom.jira]
+description = "Branch name contains a Jira ticket (e.g. PQ-123)"
+command     = "git branch --show-current 2>/dev/null | grep -oE '[A-Z]+-[0-9]+' | head -1"
+when        = 'git branch --show-current 2>/dev/null | grep -qE "[A-Z]+-[0-9]+"'
+format      = " [$output](bold teal)"
 
 # ─── Disabled: noisy modules ────────────────────────────────────────────────
 [package]
 disabled = true
-
 [dotnet]
 disabled = true
-
 [nix_shell]
 disabled = true
-
 [ruby]
 disabled = true
-
 [php]
 disabled = true
-
 [perl]
 disabled = true
-
 [aws]
 disabled = true
-
 [gcloud]
 disabled = true
-
 [azure]
 disabled = true
-
 [lua]
 disabled = true
-
 [conda]
 disabled = true
-
 [pulumi]
 disabled = true
-
 [terraform]
 disabled = true
-
-# Replaced by [custom.docker] above
 [docker_context]
 disabled = true

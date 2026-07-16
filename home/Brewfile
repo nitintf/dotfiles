@@ -34,6 +34,10 @@ brew "pnpm"
 brew "python"
 brew "go"
 
+# Fonts
+cask "font-jetbrains-mono-nerd-font"
+cask "font-symbols-only-nerd-font"
+
 # GUI apps
 cask "cursor"
 cask "iterm2"
