@@ -1,5 +1,12 @@
 theme = Everforest Dark Hard
 
+# Nightly update channel: stable 1.3.1 has a renderer bug that draws ALL Nerd
+# Font (PUA) glyphs blank — confirmed 2026-07-16 with factory-default config,
+# so it's the app, not this file. Once a fixed build is installed, re-test
+# with: printf '[]' (icon visible between brackets = fixed), then the
+# starship config can switch back to Nerd Font symbols.
+auto-update-channel = tip
+
 # Primary font, then Symbols Nerd Font Mono as a deterministic fallback for
 # PUA glyphs. On macOS, system fonts claim PUA ranges with empty glyphs and
 # win Ghostty's fallback race — stacking Symbols Nerd Font Mono fixes that.
