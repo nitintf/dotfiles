@@ -79,7 +79,7 @@ format            = "[$path]($style)[$read_only]($read_only_style) "
 [git_branch]
 symbol = "⎇ "
 style  = "bold pink"
-format = "[on ](subtext0)[$symbol$branch]($style) "
+format = "[on ](subtext0)[$symbol$branch]($style)"
 
 [git_commit]
 commit_hash_length = 7
@@ -88,25 +88,26 @@ tag_symbol         = " ⚐ "
 
 [git_state]
 style  = "bold mauve"
-format = '\([$state( $progress_current/$progress_total)]($style)\) '
+format = ' \([$state( $progress_current/$progress_total)]($style)\)'
 
-# Git status — git-style single-letter indicators, wrapped in parens.
-#   M modified   A added/staged   D deleted   R renamed   ? untracked
-#   * stashed    ! conflict       ⇡ ahead     ⇣ behind    ⇕ diverged
+# Git status — Unicode sigils, each fragment carries its own leading space so
+# spacing stays single-width no matter which fragments appear.
+#   ✚ modified   ● staged   ✘ deleted   » renamed   … untracked
+#   ⚑ stashed    ✖ conflict   ⇡ ahead   ⇣ behind    ⇕ diverged
 [git_status]
-format     = '([\($all_status$ahead_behind\)]($style) )'
+format     = '([$all_status$ahead_behind]($style))'
 style      = "bold yellow"
-conflicted = "[!$count](red) "
-ahead      = "[⇡$count](green) "
-behind     = "[⇣$count](yellow) "
-diverged   = "[⇕⇡$ahead_count⇣$behind_count](red) "
+conflicted = "[ ✖$count](red)"
+ahead      = "[ ⇡$count](green)"
+behind     = "[ ⇣$count](yellow)"
+diverged   = "[ ⇕⇡$ahead_count⇣$behind_count](red)"
 up_to_date = ""
-untracked  = "[?$count](sky) "
-stashed    = "[*$count](teal) "
-modified   = "[M$count](peach) "
-staged     = "[A$count](green) "
-renamed    = "[R$count](mauve) "
-deleted    = "[D$count](red) "
+untracked  = "[ …$count](sky)"
+stashed    = "[ ⚑$count](teal)"
+modified   = "[ ✚$count](peach)"
+staged     = "[ ●$count](green)"
+renamed    = "[ »$count](mauve)"
+deleted    = "[ ✘$count](red)"
 
 # ─── Fill (pushes right-side modules to the right edge) ─────────────────────
 [fill]
@@ -182,18 +183,6 @@ detect_files = [
 ]
 command = "echo"
 format  = " [🐳 docker](sapphire)"
-
-[custom.nx]
-description  = "Nx monorepo indicator"
-detect_files = ["nx.json"]
-command      = "echo"
-format       = " [nx](bold blue)"
-
-[custom.biome]
-description  = "Biome formatter/linter"
-detect_files = ["biome.json", "biome.jsonc", "biome.base.json"]
-command      = "echo"
-format       = " [biome](green)"
 
 [custom.pnpm]
 description  = "pnpm workspace"
