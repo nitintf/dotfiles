@@ -2,12 +2,19 @@
 # Install/update with: brew bundle --file=~/Brewfile
 # Prune packages not listed: brew bundle cleanup --file=~/Brewfile --force
 
+# homebrew-core's `terraform` is frozen at 1.5.7 — the last release before
+# HashiCorp switched to the BUSL. Current versions come from their own tap.
+tap "hashicorp/tap"
+
 # Shell / core CLI
 brew "fish"
 brew "git"
 brew "gh"
+brew "git-lfs"
+brew "git-delta"                 # syntax-highlighted diffs, used by git + lazygit
 brew "lazygit"
 brew "fzf"
+brew "atuin"                     # searchable shell history; owns ctrl-r
 brew "starship"
 brew "tmux"
 brew "neovim"
@@ -18,7 +25,6 @@ brew "lsd"
 brew "fd"
 brew "ripgrep"
 brew "jq"
-brew "zoxide"
 
 # System / networking
 brew "htop"
@@ -26,29 +32,32 @@ brew "wget"
 brew "curl"
 brew "unzip"
 brew "tldr"
-brew "neofetch"
 
-# Languages / runtimes
-brew "node"
+# Toolchain
+# Language runtimes — node, python, go, rust — are NOT here: mise owns them,
+# so their versions are per-project. See .config/mise/config.toml.
+brew "mise"
 brew "pnpm"
-brew "python"
-brew "go"
+brew "uv"                        # python packaging + virtualenvs
+brew "just"                      # command runner (justfile)
+brew "hashicorp/tap/terraform"
 
 # Fonts
 cask "font-jetbrains-mono-nerd-font"
 cask "font-symbols-only-nerd-font"
 
 # GUI apps
-cask "cursor"
-cask "iterm2"
+cask "1password"                 # desktop app: SSH agent + CLI integration
+cask "1password-cli"
+cask "claude"
+cask "visual-studio-code"
+cask "ghostty"
 cask "rectangle"
 cask "raycast"
 cask "appcleaner"
 cask "dbeaver-community"
 cask "obsidian"
-cask "zen"
 cask "spotify"
 cask "slack"
 cask "docker"
 cask "postman"
-cask "1password-cli"

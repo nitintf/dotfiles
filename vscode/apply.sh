@@ -1,36 +1,44 @@
 #!/usr/bin/env bash
-# Recreate the "Nitin's setup" VS Code profile on this machine:
-# installs all extensions into the profile, then copies settings + keybindings.
+# Apply this repo's VS Code config to the DEFAULT profile on this machine:
+# installs every extension, then copies settings + keybindings into place.
+#
+# The default profile lives at a fixed path (unlike named profiles, which VS
+# Code files under a random directory), so this is just a copy — no lookup.
+#
+#   ./apply.sh            install extensions listed in extensions.txt
+#   ./apply.sh --prune    also uninstall anything NOT in extensions.txt
 set -euo pipefail
 
-PROFILE="Nitin's setup"
 DIR="$(cd "$(dirname "$0")" && pwd)"
 USER_DIR="$HOME/Library/Application Support/Code/User"
+PRUNE=0
+[ "${1:-}" = "--prune" ] && PRUNE=1
 
 if ! command -v code >/dev/null; then
   echo "'code' CLI not found — in VS Code run: Shell Command: Install 'code' command in PATH" >&2
   exit 1
 fi
 
+# Extensions with no --profile go into the default profile.
 while read -r ext; do
-  [ -n "$ext" ] && code --profile "$PROFILE" --install-extension "$ext"
+  [ -n "$ext" ] && code --force --install-extension "$ext"
 done < "$DIR/extensions.txt"
 
-# VS Code assigns the profile a random directory name; look it up in storage.json
-LOCATION=$(python3 - "$PROFILE" "$USER_DIR/globalStorage/storage.json" <<'EOF'
-import json, sys
-name, path = sys.argv[1], sys.argv[2]
-for p in json.load(open(path)).get("userDataProfiles", []):
-    if p["name"] == name:
-        print(p["location"])
-        break
-EOF
-)
-
-if [ -z "$LOCATION" ]; then
-  echo "Profile '$PROFILE' not registered yet — open VS Code once, then re-run this script." >&2
-  exit 1
+if [ "$PRUNE" -eq 1 ]; then
+  # Uninstall anything the repo doesn't list. Catches leftovers that conflict
+  # with this setup (e.g. vscodevim.vim fighting asvetliakov.vscode-neovim).
+  comm -23 <(code --list-extensions | sort) <(sort "$DIR/extensions.txt") |
+    while read -r ext; do
+      [ -n "$ext" ] && echo "Removing $ext" && code --uninstall-extension "$ext"
+    done
 fi
 
-cp "$DIR/settings.json" "$DIR/keybindings.json" "$USER_DIR/profiles/$LOCATION/"
-echo "Done: extensions installed, settings + keybindings applied to '$PROFILE' ($LOCATION)"
+mkdir -p "$USER_DIR"
+for f in settings.json keybindings.json; do
+  # Keep one backup of whatever was there before, so this is undoable.
+  [ -f "$USER_DIR/$f" ] && cp "$USER_DIR/$f" "$USER_DIR/$f.bak"
+  cp "$DIR/$f" "$USER_DIR/$f"
+done
+
+echo "Done: extensions installed, settings + keybindings applied to the default profile."
+echo "Restart VS Code to pick them up."

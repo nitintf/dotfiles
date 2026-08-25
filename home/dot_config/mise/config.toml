@@ -1,0 +1,19 @@
+# mise — one version manager for every language runtime.
+# Replaces the nvm.fish fisher plugin, the per-prompt .nvmrc hook, and the
+# brew-installed node/python/go that used to fight with them.
+#
+#   mise use -g node@22     pin a global version
+#   mise use node@20        pin it for this project (writes ./mise.toml)
+#   mise install            install everything a project asks for
+#   mise outdated           what's behind
+
+[tools]
+node = "lts"
+python = "3.13"
+go = "latest"
+rust = "stable"
+
+[settings]
+# Honour the .nvmrc / .node-version files that already exist in older repos,
+# so projects work without adding a mise.toml to each one.
+idiomatic_version_file_enable_tools = ["node"]

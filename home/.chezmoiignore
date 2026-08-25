@@ -1,7 +1,27 @@
+# Raycast: config.json holds live access tokens, and extensions/ is a ~170MB
+# node_modules tree. Raycast's real config is an encrypted SQLite database that
+# can't be restored by copying anyway — use its built-in Cloud Sync instead.
 .config/raycast
 
 # Work-only / machine-local (never track in this public repo)
 .config/fish/conf.d/work-local.fish
+
+# fisher-owned plugin files. run_once_after_install-fisher-plugins.sh installs
+# these from .config/fish/fish_plugins; tracking copies here as well causes
+# permanent `chezmoi status` drift every time fisher updates a plugin.
+.config/fish/functions/_*.fish
+.config/fish/functions/__z*.fish
+.config/fish/functions/fisher.fish
+.config/fish/functions/fish_logo.fish
+.config/fish/functions/fzf_configure_bindings.fish
+.config/fish/completions/fisher.fish
+.config/fish/completions/fish_logo.fish
+.config/fish/conf.d/autopair.fish
+.config/fish/conf.d/z.fish
+.config/fish/conf.d/fzf.fish
+
+# htop rewrites htoprc on every quit — runtime state, not config.
+.config/htop/htoprc
 
 # Fish universal-variable store — runtime state, per-machine, fish rewrites it
 .config/fish/fish_variables

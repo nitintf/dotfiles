@@ -1,0 +1,26 @@
+{{ if eq .chezmoi.os "darwin" -}}
+#!/bin/bash
+# Claude Code CLI. There is no Homebrew formula or cask for it (checked against
+# `brew search claude` — only the `claude` cask, which is the desktop app), so
+# it goes through the official installer. It lands in ~/.local/bin, which
+# config.fish already puts on PATH.
+set -euo pipefail
+
+if command -v claude >/dev/null 2>&1; then
+  echo "✅ Claude Code already installed at $(command -v claude)"
+  exit 0
+fi
+
+if [ -x "$HOME/.local/bin/claude" ]; then
+  echo "✅ Claude Code already installed at $HOME/.local/bin/claude"
+  exit 0
+fi
+
+echo "🤖 Installing Claude Code..."
+if curl -fsSL https://claude.ai/install.sh | bash; then
+  echo "✅ Claude Code installed. Run 'claude' in a new shell to sign in."
+else
+  echo "⚠️  Claude Code install failed. Install manually:"
+  echo "     curl -fsSL https://claude.ai/install.sh | bash"
+fi
+{{ end -}}

@@ -11,7 +11,7 @@ elif [ -x /usr/local/bin/brew ]; then
 fi
 
 if ! command -v brew >/dev/null 2>&1; then
-  echo "❌ brew not found. run_once_before_install-brew.sh should have installed it — re-run 'chezmoi apply'."
+  echo "❌ brew not found. run_once_before_bootstrap.sh should have installed it — re-run 'chezmoi apply'."
   exit 1
 fi
 

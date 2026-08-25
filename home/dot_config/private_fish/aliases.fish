@@ -38,7 +38,6 @@ alias gst='git status'
 alias gc='git commit -m'
 alias gnb='git checkout -b'
 alias gb='git checkout'
-alias gpu='git push origin master'
 alias pr='git push --set-upstream origin'
 alias gcu='git reset --soft HEAD^'
 
@@ -57,7 +56,6 @@ alias la='lsd -a'
 alias lla='lsd -la'
 alias essh='nvim ~/.ssh/config'
 alias chmodall='sudo chmod -R 0777'
-alias copyssh='pbcopy < ~/.ssh/$1'
 
 # Neovim / Vim
 alias v='nvim'
@@ -66,8 +64,6 @@ alias vim='nvim'
 
 # Python
 alias jup='jupyter notebook'
-alias pipb='pip freeze > ~/.dotfiles/PIP.txt'
-alias pipi='pip install -r ~/.dotfiles/PIP.txt'
 alias jupr="jupyter notebook --NotebookApp.allow_origin='https://colab.research.google.com' --port=9090 --no-browser"
 
 # Shell
@@ -86,16 +82,51 @@ alias ....='cd ../../..'
 alias .....='cd ../../../..'
 
 # Tmux
-alias tsa='tmux-sendall'                # Send a command to all windows and panes that don't have a process running
 alias tks='tmux kill-server'            # Kill everything
 alias tl='tmux list-sessions'           # List all of the open tmux sessions
 alias ts='tmux choose-session'          # Choose a session to attach to
 alias tk='tmux kill-session -t'         # Kill a named tmux session
 alias td='tmux detach'                  # Detach current session
-alias ta='tmux attach -t'               # Attach to named tmux session
 alias t='tmux attach || tmux new-session'   # Attaches tmux to the last session; creates a new session if none exists.
 alias tpi='~/.config/tmux/plugins/tpm/bin/install_plugins' # Installs Tmux plugins
 alias tpu='~/.config/tmux/plugins/tpm/bin/update_plugins all' # Updates all Tmux plugins
 
-# nvm
-alias nu='nvm use'
+# mise (replaces nvm/asdf/rbenv — one manager for every runtime)
+alias mi='mise install'                 # install what this project pins
+alias mu='mise use'                     # pin for this project: mu node@20
+alias mug='mise use -g'                 # pin globally:        mug node@lts
+alias ml='mise ls'                      # what's installed / active here
+alias mlr='mise ls-remote'              # versions available to install
+alias mo='mise outdated'
+alias mx='mise exec --'                 # run once without pinning: mx node@18 -- node -v
+alias mt='mise tasks'
+
+# Git delta — `git diff` is already piped through delta via ~/.gitconfig.
+alias dlt='delta --side-by-side'        # eyeball two files: dlt a.txt b.txt
+alias gd='git diff'
+alias gds='git diff --staged'
+alias gdw='git diff --word-diff'
+
+# atuin (ctrl-r opens the history search; these are the out-of-band bits)
+alias hs='atuin search'
+alias hst='atuin stats'
+alias hsync='atuin sync'
+
+# just
+alias j='just'
+alias jl='just --list'
+alias jc='just --choose'                # fzf-style picker over recipes
+
+# uv (python packaging)
+alias uvs='uv sync'
+alias uvr='uv run'
+alias uva='uv add'
+alias uvv='uv venv'
+
+# terraform
+alias tf='terraform'
+alias tfi='terraform init'
+alias tfp='terraform plan'
+alias tfa='terraform apply'
+alias tfv='terraform validate'
+alias tff='terraform fmt -recursive'

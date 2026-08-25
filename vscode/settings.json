@@ -1,6 +1,6 @@
 {
     // ===== LOOK =====
-    "workbench.colorTheme": "Min Dark",        // Min Dark is also included — switch with Cmd+K then Cmd+T
+    "workbench.colorTheme": "Min Dark",          // from miguelsolorio.min-theme
     "workbench.iconTheme": "symbols",
     "workbench.activityBar.location": "top",     // compact icon strip across the top
     // Nerd Font so terminal prompt glyphs/powerline symbols render (VS Code's
@@ -41,7 +41,6 @@
 
     "files.autoSave": "afterDelay",
     "gitlens.ai.model": "vscode",
-    "gitlens.ai.vscode.model": "copilot:oswe-vscode-modelD",
     "workbench.productIconTheme": "fluent-icons",
     "go.toolsManagement.autoUpdate": true,
 
@@ -69,102 +68,15 @@
         "~/code"
     ],
 
-    // ===== WHICH-KEY (VSpaceCode) — leader menu opened with <space> =====
-    "whichkey.sortOrder": "alphabetically",
-    "whichkey.delay": 200,   // ms to wait before showing the popup — fast sequences (space f) never flash it
-    "whichkey.bindings": [
-        { "key": " ", "name": "Find file", "type": "command", "command": "workbench.action.quickOpen" },
-        { "key": "/", "name": "Search in files", "type": "command", "command": "workbench.action.findInFiles" },
-        { "key": ":", "name": "Command palette", "type": "command", "command": "workbench.action.showCommands" },
-        { "key": "e", "name": "Toggle explorer", "type": "command", "command": "workbench.action.toggleSidebarVisibility" },
-        { "key": "x", "name": "Close editor", "type": "command", "command": "workbench.action.closeActiveEditor" },
-        {
-            "key": "b", "name": "+Buffers", "type": "bindings", "bindings": [
-                { "key": "b", "name": "Show all editors", "type": "command", "command": "workbench.action.showAllEditors" },
-                { "key": "n", "name": "Next editor", "type": "command", "command": "workbench.action.nextEditor" },
-                { "key": "p", "name": "Previous editor", "type": "command", "command": "workbench.action.previousEditor" },
-                { "key": "d", "name": "Close editor", "type": "command", "command": "workbench.action.closeActiveEditor" },
-                { "key": "D", "name": "Close all editors", "type": "command", "command": "workbench.action.closeAllEditors" }
-            ]
-        },
-        {
-            "key": "f", "name": "+Files", "type": "bindings", "bindings": [
-                { "key": "f", "name": "Find file", "type": "command", "command": "workbench.action.quickOpen" },
-                { "key": "s", "name": "Save", "type": "command", "command": "workbench.action.files.save" },
-                { "key": "S", "name": "Save all", "type": "command", "command": "workbench.action.files.saveAll" },
-                { "key": "r", "name": "Recent files", "type": "command", "command": "workbench.action.openRecent" },
-                { "key": "n", "name": "New file", "type": "command", "command": "workbench.action.files.newUntitledFile" },
-                { "key": "c", "name": "Copy path", "type": "command", "command": "workbench.action.files.copyPathOfActiveFile" }
-            ]
-        },
-        {
-            "key": "g", "name": "+Git", "type": "bindings", "bindings": [
-                { "key": "g", "name": "Source control", "type": "command", "command": "workbench.view.scm" },
-                { "key": "s", "name": "Stage file", "type": "command", "command": "git.stage" },
-                { "key": "c", "name": "Commit", "type": "command", "command": "git.commit" },
-                { "key": "p", "name": "Push", "type": "command", "command": "git.push" },
-                { "key": "b", "name": "Toggle blame (GitLens)", "type": "command", "command": "gitlens.toggleFileBlame" },
-                { "key": "l", "name": "Git graph", "type": "command", "command": "git-graph.view" },
-                {
-                    "key": "w", "name": "+Worktrees", "type": "bindings", "bindings": [
-                        { "key": "w", "name": "Open worktree (picker)", "type": "command", "command": "git-worktrees.cmd.open" },
-                        { "key": "a", "name": "Add worktree", "type": "command", "command": "git-worktrees.cmd.add" },
-                        { "key": "d", "name": "Delete worktree", "type": "command", "command": "git-worktrees.cmd.delete" },
-                        { "key": "r", "name": "Refresh", "type": "command", "command": "git-worktrees.cmd.refresh" },
-                        { "key": "v", "name": "GitLens worktrees view", "type": "command", "command": "gitlens.showWorktreesView" },
-                        { "key": "n", "name": "Open worktree in new window", "type": "command", "command": "gitlens.openWorktreeInNewWindow:views" }
-                    ]
-                }
-            ]
-        },
-        {
-            "key": "s", "name": "+Search/Symbols", "type": "bindings", "bindings": [
-                { "key": "p", "name": "Search in files", "type": "command", "command": "workbench.action.findInFiles" },
-                { "key": "s", "name": "Symbol in file", "type": "command", "command": "workbench.action.gotoSymbol" },
-                { "key": "S", "name": "Symbol in workspace", "type": "command", "command": "workbench.action.showAllSymbols" }
-            ]
-        },
-        {
-            "key": "c", "name": "+Code", "type": "bindings", "bindings": [
-                { "key": "a", "name": "Quick fix / actions", "type": "command", "command": "editor.action.quickFix" },
-                { "key": "r", "name": "Rename symbol", "type": "command", "command": "editor.action.rename" },
-                { "key": "f", "name": "Format document", "type": "command", "command": "editor.action.formatDocument" },
-                { "key": "d", "name": "Go to definition", "type": "command", "command": "editor.action.revealDefinition" },
-                { "key": "D", "name": "Peek definition", "type": "command", "command": "editor.action.peekDefinition" },
-                { "key": "h", "name": "Show hover", "type": "command", "command": "editor.action.showHover" },
-                { "key": "R", "name": "Find references", "type": "command", "command": "references-view.findReferences" }
-            ]
-        },
-        {
-            "key": "w", "name": "+Window", "type": "bindings", "bindings": [
-                { "key": "v", "name": "Split right", "type": "command", "command": "workbench.action.splitEditor" },
-                { "key": "s", "name": "Split down", "type": "command", "command": "workbench.action.splitEditorDown" },
-                { "key": "h", "name": "Focus left", "type": "command", "command": "workbench.action.focusLeftGroup" },
-                { "key": "l", "name": "Focus right", "type": "command", "command": "workbench.action.focusRightGroup" },
-                { "key": "k", "name": "Focus up", "type": "command", "command": "workbench.action.focusAboveGroup" },
-                { "key": "j", "name": "Focus down", "type": "command", "command": "workbench.action.focusBelowGroup" },
-                { "key": "d", "name": "Close group", "type": "command", "command": "workbench.action.closeGroup" },
-                { "key": "m", "name": "Maximize group", "type": "command", "command": "workbench.action.toggleMaximizeEditorGroup" }
-            ]
-        },
-        {
-            "key": "p", "name": "+Project", "type": "bindings", "bindings": [
-                { "key": "p", "name": "Switch project", "type": "command", "command": "projectManager.listProjects" },
-                { "key": "s", "name": "Save project", "type": "command", "command": "projectManager.saveProject" }
-            ]
-        },
-        {
-            "key": "t", "name": "+Toggle", "type": "bindings", "bindings": [
-                { "key": "t", "name": "Terminal", "type": "command", "command": "workbench.action.terminal.toggleTerminal" },
-                { "key": "p", "name": "Problems panel", "type": "command", "command": "workbench.actions.view.problems" },
-                { "key": "z", "name": "Zen mode", "type": "command", "command": "workbench.action.toggleZenMode" },
-                { "key": "w", "name": "Word wrap", "type": "command", "command": "editor.action.toggleWordWrap" },
-                { "key": "b", "name": "Sidebar (left)", "type": "command", "command": "workbench.action.toggleSidebarVisibility" },
-                { "key": "r", "name": "Right sidebar", "type": "command", "command": "workbench.action.toggleAuxiliaryBar" }
-            ]
-        }
-    ],
-    "editor.accessibilitySupport": "on",
+    // ===== FORMATTING =====
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "[javascript]":      { "editor.defaultFormatter": "biomejs.biome" },
+    "[javascriptreact]": { "editor.defaultFormatter": "biomejs.biome" },
+    "[typescript]":      { "editor.defaultFormatter": "biomejs.biome" },
+    "[typescriptreact]": { "editor.defaultFormatter": "biomejs.biome" },
+    "[json]":            { "editor.defaultFormatter": "biomejs.biome" },
+    "[jsonc]":           { "editor.defaultFormatter": "biomejs.biome" },
+
     "json.schemaDownload.trustedDomains": {
         "https://schemastore.azurewebsites.net/": true,
         "https://raw.githubusercontent.com/microsoft/vscode/": true,

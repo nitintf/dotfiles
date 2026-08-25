@@ -1,12 +1,15 @@
-# Work identity when inside ~/code/work/
-[includeIf "gitdir:~/code/work/"]
-    path = ~/.gitconfig-work
-
-# Personal identity when inside ~/code/nitintf/
-[includeIf "gitdir:~/code/nitintf/"]
-    path = ~/.gitconfig-personal
+# Personal identity is the default everywhere. Work repos override it via the
+# includeIf at the BOTTOM of this file — git applies includes in file order, so
+# an include must come after the values it is meant to override.
+[user]
+    name = {{ .personal.name | quote }}
+    email = {{ .personal.email | quote }}
+[init]
+    defaultBranch = main
 
 [core]
+    sshCommand = {{ .personal.sshCommand | quote }}
+  pager = delta
   # Global ignore file (not shared)
   excludesfile = ~/.gitignore
   whitespace = -trailing-space
@@ -14,6 +17,8 @@
 	ignorecase = false
 [push]
   default = simple
+  autoSetupRemote = true
+  followTags = true
 [color]
   status = auto
   diff = auto
@@ -37,6 +42,22 @@
   lg = log --graph --date=relative --pretty=tformat:'%Cred%h%Creset -%C(auto)%d%Creset %s %Cgreen(%an %ad)%Creset'
 	hist = log --pretty=format:\"%Cgreen%h %Creset%cd %Cblue[%cn] %Creset%s%C(yellow)%d%C(reset)\" --graph --date=relative --decorate --all
 	llog = log --graph --name-status --pretty=format:\"%C(red)%h %C(reset)(%cd) %C(green)%an %Creset%s %C(yellow)%d%Creset\" --date=relative
+# ── delta: syntax-highlighted diffs (brew "git-delta") ──────────────────────
+# core.pager is set in the [core] block above; lazygit picks it up from there.
+[interactive]
+  diffFilter = delta --color-only
+[delta]
+  navigate = true          # n / N jump between files in the diff
+  line-numbers = true
+  hyperlinks = true        # clickable file:line in terminals that support it
+  syntax-theme = OneHalfDark
+[merge]
+  # zdiff3 shows the common ancestor in conflict markers — far easier to
+  # resolve than the default. Requires git >= 2.35.
+  conflictstyle = zdiff3
+[diff]
+  colorMoved = default     # moved lines get their own colour, not add+delete
+
 [fetch]
   # Auto-fetch submodule changes (sadly, won't auto-update)
   recurseSubmodules = on-demand
@@ -59,12 +80,13 @@
 	remote = cyan bold
 [tag]
 	sort = version:refname
-[push]
-	autoSetupRemote = true
-	followTags = true
-
 [filter "lfs"]
 	process = git-lfs filter-process
 	required = true
 	clean = git-lfs clean -- %f
 	smudge = git-lfs smudge -- %f
+
+# Work identity when inside ~/code/work/ — last, so it wins over the defaults
+# above. Not written on non-work machines (see .chezmoiignore).
+[includeIf "gitdir:~/code/work/"]
+    path = ~/.gitconfig-work

@@ -1,0 +1,42 @@
+{{ if eq .chezmoi.os "darwin" -}}
+#!/bin/bash
+# Make fish the login shell. Runs in the "after" phase so brew bundle
+# (run_onchange_install-packages.sh) has already installed fish.
+set -euo pipefail
+
+if [ -x /opt/homebrew/bin/brew ]; then
+  eval "$(/opt/homebrew/bin/brew shellenv)"
+elif [ -x /usr/local/bin/brew ]; then
+  eval "$(/usr/local/bin/brew shellenv)"
+fi
+
+if ! command -v fish >/dev/null 2>&1; then
+  echo "⚠️  fish not installed — skipping. Re-run 'chezmoi apply' after brew bundle succeeds."
+  exit 0
+fi
+
+FISH_PATH="$(command -v fish)"
+
+if [ "${SHELL:-}" = "$FISH_PATH" ]; then
+  echo "✅ fish is already the default shell."
+  exit 0
+fi
+
+# Both steps below need sudo/password, which is unavailable in a non-interactive
+# apply. Warn instead of aborting the whole run.
+if ! grep -qx "$FISH_PATH" /etc/shells; then
+  echo "🐟 Adding $FISH_PATH to /etc/shells (needs sudo)..."
+  if ! echo "$FISH_PATH" | sudo tee -a /etc/shells >/dev/null; then
+    echo "⚠️  Could not write /etc/shells. Run manually:"
+    echo "     echo $FISH_PATH | sudo tee -a /etc/shells && chsh -s $FISH_PATH"
+    exit 0
+  fi
+fi
+
+echo "🐟 Setting fish as default shell for $(whoami)..."
+if chsh -s "$FISH_PATH"; then
+  echo "✅ Done — restart your terminal for it to take effect."
+else
+  echo "⚠️  chsh failed. Run manually: chsh -s $FISH_PATH"
+fi
+{{ end -}}

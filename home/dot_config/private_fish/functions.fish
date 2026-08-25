@@ -11,9 +11,18 @@ function mkd -d "Create a directory and set CWD"
     end
 end
 
-function fd -d "Show git diff using fzf" 
-  # preview="git diff $@ --color=always -- {-1}"
+# Named gdf, not fd: `fd` would shadow the fd binary installed via Brewfile
+# (and used by PatrickF1/fzf.fish for its file search).
+function gdf -d "Browse changed files with fzf, previewing each diff"
   git diff --name-only | fzf -m --ansi --preview "git diff --color=always -- {-1}"
+end
+
+function copyssh -d "Copy an ~/.ssh file to the clipboard"
+    if test (count $argv) -eq 0
+        echo "usage: copyssh <filename-in-~/.ssh>" >&2
+        return 1
+    end
+    pbcopy < "$HOME/.ssh/$argv[1]"
 end
 
 

@@ -1,0 +1,85 @@
+{{ if eq .chezmoi.os "darwin" -}}
+{{- $personalKey := dig "personal" "key" "~/.ssh/id_ed25519" . -}}
+{{- $workKey := dig "work" "key" "~/.ssh/id_ed25519_work" . -}}
+#!/bin/bash
+# Create SSH keys if they don't exist yet, register them with ssh-agent and the
+# macOS keychain, then show the public key so it can be added to GitHub.
+#
+# Named so it sorts last among the "after" scripts, which means the "paste this
+# into GitHub" output is the final thing `chezmoi apply` prints.
+set -euo pipefail
+
+mkdir -p "$HOME/.ssh"
+chmod 700 "$HOME/.ssh"
+
+SSH_CONFIG="$HOME/.ssh/config"
+touch "$SSH_CONFIG"
+chmod 600 "$SSH_CONFIG"
+
+# chezmoi stores the key path with a literal ~, which the shell will not expand
+# from inside a variable.
+expand_tilde() {
+  case "$1" in
+    "~/"*) echo "$HOME/${1#\~/}" ;;
+    *)     echo "$1" ;;
+  esac
+}
+
+ensure_key() {
+  local key comment label
+  key="$(expand_tilde "$1")"; comment="$2"; label="$3"
+
+  if [ -f "$key" ]; then
+    echo "✅ $label SSH key already present: $key"
+    return 0
+  fi
+
+  mkdir -p "$(dirname "$key")"
+  echo "🔑 Generating $label SSH key: $key"
+  # No passphrase: the key sits behind FileVault and the login keychain, and a
+  # passphrase would make every non-interactive git operation prompt.
+  ssh-keygen -t ed25519 -C "$comment" -f "$key" -N "" -q
+  chmod 600 "$key"
+  ssh-add --apple-use-keychain "$key" >/dev/null 2>&1 ||
+    ssh-add "$key" >/dev/null 2>&1 || true
+
+  echo
+  echo "──────────────────────────────────────────────────────────────"
+  echo "  New $label public key — this needs to go into GitHub"
+  echo "──────────────────────────────────────────────────────────────"
+  cat "$key.pub"
+  echo
+
+  if command -v gh >/dev/null 2>&1 && gh auth status >/dev/null 2>&1; then
+    local title
+    title="$(scutil --get ComputerName 2>/dev/null || hostname)"
+    if gh ssh-key add "$key.pub" --title "$title ($label)"; then
+      echo "  ✅ Uploaded to GitHub as '$title ($label)'"
+      echo
+      return 0
+    fi
+    echo "  ⚠️  gh upload failed — adding it by hand instead:"
+  fi
+
+  if command -v pbcopy >/dev/null 2>&1; then
+    pbcopy < "$key.pub"
+    echo "  📋 Copied to the clipboard."
+  fi
+  echo "  → Paste it at https://github.com/settings/ssh/new"
+  echo "  → Or later:  gh auth login && gh ssh-key add $key.pub"
+  echo
+}
+
+ensure_key {{ $personalKey | quote }} {{ .personal.email | quote }} "personal"
+{{ if .isWork }}
+ensure_key {{ $workKey | quote }} {{ .work.email | quote }} "work"
+{{ end }}
+# One github.com block so plain `ssh`/`git clone git@github.com:...` outside
+# ~/code/nitintf and ~/code/work still picks up the personal key. Inside those
+# directories .gitconfig's core.sshCommand pins the right key explicitly.
+if ! grep -qE "^[[:space:]]*Host[[:space:]]+github\.com([[:space:]]|$)" "$SSH_CONFIG"; then
+  printf '\nHost github.com\n  AddKeysToAgent yes\n  UseKeychain yes\n  IdentityFile %s\n' \
+    "$(expand_tilde {{ $personalKey | quote }})" >> "$SSH_CONFIG"
+  echo "✅ Added a github.com block to ~/.ssh/config"
+fi
+{{ end -}}

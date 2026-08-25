@@ -8,7 +8,7 @@ the per-machine values that the templates in this repo reference.
 
 {{- $personalName := promptStringOnce . "personal.name" "Personal git name" -}}
 {{- $personalEmail := promptStringOnce . "personal.email" "Personal git email" -}}
-{{- $personalKey := promptStringOnce . "personal.key" "Path to personal SSH key" "~/.ssh/id_ed25519" -}}
+{{- $personalKey := promptStringOnce . "personal.key" "Path to personal SSH key (generated if it does not exist)" "~/.ssh/id_ed25519" -}}
 
 [git]
     autoCommit = true
@@ -20,17 +20,19 @@ the per-machine values that the templates in this repo reference.
 [data.personal]
     name       = {{ $personalName | quote }}
     email      = {{ $personalEmail | quote }}
+    key        = {{ $personalKey | quote }}
     sshCommand = {{ printf "ssh -i %s" $personalKey | quote }}
 
 {{- if $isWork }}
 {{- $workName := promptStringOnce . "work.name" "Work git name" -}}
 {{- $workEmail := promptStringOnce . "work.email" "Work git email" -}}
-{{- $workKey := promptStringOnce . "work.key" "Path to work SSH key" -}}
+{{- $workKey := promptStringOnce . "work.key" "Path to work SSH key (generated if it does not exist)" "~/.ssh/id_ed25519_work" -}}
 {{- $workCodeDir := promptStringOnce . "work.codeDir" "Work code directory" "~/code/work" }}
 
 [data.work]
     name       = {{ $workName | quote }}
     email      = {{ $workEmail | quote }}
+    key        = {{ $workKey | quote }}
     sshCommand = {{ printf "ssh -i %s" $workKey | quote }}
     codeDir    = {{ $workCodeDir | quote }}
 {{- end }}
