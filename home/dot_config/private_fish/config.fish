@@ -53,6 +53,11 @@ end
 set -gx PNPM_HOME "$HOME/Library/pnpm"
 fish_add_path "$PNPM_HOME"
 
+# Java (Zulu 17, for Android/Gradle builds)
+if test -d /Library/Java/JavaVirtualMachines/zulu-17.jdk
+  set -gx JAVA_HOME /Library/Java/JavaVirtualMachines/zulu-17.jdk/Contents/Home
+end
+
 # Android SDK
 if test -d "$HOME/Library/Android/sdk"
   set -gx ANDROID_HOME "$HOME/Library/Android/sdk"
