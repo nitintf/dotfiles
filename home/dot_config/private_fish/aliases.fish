@@ -41,6 +41,11 @@ alias gb='git checkout'
 alias pr='git push --set-upstream origin'
 alias gcu='git reset --soft HEAD^'
 
+# Git worktrees (gwl, gwa, gwr, gwcd are functions in functions.fish)
+alias gw='git worktree'
+alias gwp='git worktree prune'
+alias gwls='git worktree list'
+
 # Homebrew
 alias br='brew remove'
 alias bu='brew update'
@@ -56,6 +61,7 @@ alias la='lsd -a'
 alias lla='lsd -la'
 alias essh='nvim ~/.ssh/config'
 alias chmodall='sudo chmod -R 0777'
+alias ai='claude'
 
 # Neovim / Vim
 alias v='nvim'

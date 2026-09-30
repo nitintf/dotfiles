@@ -1,5 +1,9 @@
 local Plugin = {'akinsho/bufferline.nvim'}
 
+-- VSCode draws this itself. cond keeps the plugin installed for standalone
+-- nvim but never loads it in the embedded instance.
+Plugin.cond = not vim.g.vscode
+
 Plugin.event = 'VeryLazy'
 
 Plugin.opts = {

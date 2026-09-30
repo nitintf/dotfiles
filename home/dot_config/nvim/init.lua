@@ -8,4 +8,7 @@ load('core.commands')
 load('core.keymaps')
 require('core.plugins')
 
-pcall(vim.cmd.colorscheme, 'tokyonight-night')
+-- VSCode paints the editor itself, the embedded nvim never renders a colorscheme.
+if not vim.g.vscode then
+  pcall(vim.cmd.colorscheme, 'tokyonight-night')
+end

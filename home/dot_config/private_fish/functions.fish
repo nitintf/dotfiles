@@ -126,3 +126,162 @@ function abuild -d "Build Android app locally with EAS and optionally install on
         echo "❌ No APK found in build output."
     end
 end
+
+# Git worktrees live next to the main checkout: ~/code/foo -> ~/code/foo.worktrees/<branch>.
+# Resolved from the main checkout, so these work the same from inside any worktree.
+function __wt_dir -d "Print the worktrees folder for the current repo"
+    set -l common (git rev-parse --path-format=absolute --git-common-dir 2>/dev/null)
+    or begin
+        echo "not inside a git repo" >&2
+        return 1
+    end
+    set -l root (path dirname $common)
+    echo (path dirname $root)/(path basename $root).worktrees
+end
+
+function __wt_names -d "List worktree names (for completion)"
+    set -l dir (__wt_dir 2>/dev/null); or return
+    git worktree list --porcelain | string replace -rf '^worktree '(string escape --style=regex -- $dir/) ''
+end
+
+function gwa -d "Add a worktree: gwa <branch> [base]"
+    if test (count $argv) -eq 0
+        echo "usage: gwa <branch> [base, default main]" >&2
+        return 1
+    end
+    set -l dir (__wt_dir); or return
+    set -l branch $argv[1]
+    set -l base main
+    set -q argv[2]; and set base $argv[2]
+    set -l target $dir/$branch
+
+    if git show-ref --verify --quiet refs/heads/$branch
+        git worktree add $target $branch
+    else if git show-ref --verify --quiet refs/remotes/origin/$branch
+        git worktree add --track -b $branch $target origin/$branch
+    else
+        git worktree add -b $branch $target $base
+    end
+    and cd $target
+end
+
+function gwr -d "Remove a worktree: gwr <branch> [--force]"
+    if test (count $argv) -eq 0
+        echo "usage: gwr <branch> [--force]" >&2
+        return 1
+    end
+    set -l dir (__wt_dir); or return
+    set -l target $dir/$argv[1]
+    # Step out first if we are standing inside the one being removed.
+    if string match -q "$target*" -- $PWD
+        cd (path dirname $dir)/(string replace -r '\.worktrees$' '' -- (path basename $dir))
+    end
+    git worktree remove $argv[2..] $target
+    and echo "Removed $target (branch $argv[1] kept; delete it with: git branch -d $argv[1])"
+end
+
+function gwcd -d "cd into a worktree by branch, or the main checkout with no argument"
+    set -l dir (__wt_dir); or return
+    if test (count $argv) -eq 0
+        cd (path dirname $dir)/(string replace -r '\.worktrees$' '' -- (path basename $dir))
+    else
+        cd $dir/$argv[1]
+    end
+end
+
+complete -c gwr -f -a '(__wt_names)'
+complete -c gwr -l force -d "Remove even with uncommitted changes"
+complete -c gwcd -f -a '(__wt_names)'
+complete -c gwa -f -a '(git for-each-ref --format="%(refname:short)" refs/heads)'
+
+function gwl -d "Colorful git worktree list, as a table"
+    set -l current (git rev-parse --show-toplevel 2>/dev/null)
+    or begin
+        echo "gwl: not inside a git repo" >&2
+        return 1
+    end
+    set -l dir (__wt_dir)
+
+    # Collect rows first so the branch column can be sized to fit.
+    set -l paths; set -l branches; set -l heads; set -l flags
+    set -l wt_path; set -l wt_head; set -l wt_branch; set -l wt_flag ''
+    for line in (git worktree list --porcelain) ''
+        switch $line
+            case 'worktree *'
+                set wt_path (string replace 'worktree ' '' -- $line)
+            case 'HEAD *'
+                set wt_head (string sub -l 9 (string replace 'HEAD ' '' -- $line))
+            case 'branch *'
+                set wt_branch (string replace 'branch refs/heads/' '' -- $line)
+            case detached
+                set wt_branch '(detached)'
+            case 'locked*' 'prunable*'
+                set wt_flag (string split -f1 ' ' -- $line)
+            case ''
+                test -z "$wt_path"; and continue
+                set -a paths $wt_path; set -a heads $wt_head
+                set -a branches $wt_branch; set -a flags $wt_flag
+                set wt_path; set wt_head; set wt_branch; set wt_flag ''
+        end
+    end
+
+    # Fixed columns: marker 3 + status 12 + commit 11 + updated 9, plus gaps.
+    set -l fixed 39
+    set -l width (math max 6, (string length -V -- $branches | sort -n | tail -1))
+    set -l cols $COLUMNS
+    test -z "$cols"; and set cols 100
+    set width (math "min($width, max(12, $cols - $fixed))")
+
+    set -l dim (set_color brblack); set -l off (set_color normal)
+    echo
+    echo "  $dim""Worktrees in"(set_color normal) (set_color --bold)(string replace $HOME '~' -- $dir)$off
+    echo
+    printf '   %s%s  %s  %s  %s%s\n' $dim (string pad -r -w $width BRANCH) (string pad -r -w 10 STATUS) (string pad -r -w 9 COMMIT) UPDATED $off
+    printf '   %s%s%s\n' $dim (string repeat -n (math "$width + 33") ─) $off
+
+    set -l dirty_total 0
+    for i in (seq (count $paths))
+        set -l p $paths[$i]
+
+        set -l marker '   '
+        test "$p" = "$current"; and set marker (set_color green)' ● '$off
+
+        set -l name (string shorten -m $width -- $branches[$i])
+        set -l name_color (set_color cyan)
+        test "$p" = "$current"; and set name_color (set_color --bold green)
+
+        set -l state_text; set -l state_color
+        if test -n "$flags[$i]"; or not test -d "$p"
+            set state_text "✗ $flags[$i]"
+            test -z "$flags[$i]"; and set state_text '✗ missing'
+            set state_color (set_color red)
+        else
+            set -l dirty (git -C $p status --porcelain 2>/dev/null | count)
+            if test $dirty -gt 0
+                set state_text "✎ $dirty files"
+                set state_color (set_color yellow)
+                set dirty_total (math $dirty_total + 1)
+            else
+                set state_text '✓ clean'
+                set state_color (set_color green)
+            end
+        end
+
+        # "2 days ago" -> "2d ago", "3 months ago" -> "3mo ago"
+        set -l age (git -C $p log -1 --format=%cr 2>/dev/null | string replace -r '^(\d+) (mo|\w)\S* ago$' '$1$2 ago')
+
+        printf '%s%s%s%s  %s%s%s  %s%s%s  %s%s%s\n' $marker \
+            $name_color (string pad -r -w $width -- $name) $off \
+            $state_color (string pad -r -w 10 -- $state_text) $off \
+            (set_color yellow) (string pad -r -w 9 -- $heads[$i]) $off \
+            $dim $age $off
+
+        # Only worth printing a path when it is not the usual <dir>/<branch>.
+        if test "$p" != "$dir/$branches[$i]"; and test "$p" != (path dirname $dir)/(string replace -r '\.worktrees$' '' -- (path basename $dir))
+            printf '   %s↳ %s%s\n' $dim (string replace $HOME '~' -- $p) $off
+        end
+    end
+
+    echo
+    printf '  %s%d worktrees, %d with uncommitted changes%s\n\n' $dim (count $paths) $dirty_total $off
+end

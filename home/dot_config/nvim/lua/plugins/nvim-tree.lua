@@ -1,5 +1,9 @@
 local Plugin = {'kyazdani42/nvim-tree.lua'}
 
+-- VSCode draws this itself. cond keeps the plugin installed for standalone
+-- nvim but never loads it in the embedded instance.
+Plugin.cond = not vim.g.vscode
+
 Plugin.cmd = {'NvimTreeToggle'}
 
 -- See :help nvim-tree-setup
@@ -56,6 +60,8 @@ Plugin.opts = {
 }
 
 function Plugin.init()
+  if vim.g.vscode then return end
+
   vim.keymap.set('n', '<leader>e', '<cmd>NvimTreeToggle<cr>')
 
   -- Focus nvim-tree if it's open, otherwise toggle it

@@ -1,5 +1,9 @@
 local Plugin = {'nvim-telescope/telescope.nvim'}
 
+-- VSCode draws this itself. cond keeps the plugin installed for standalone
+-- nvim but never loads it in the embedded instance.
+Plugin.cond = not vim.g.vscode
+
 Plugin.branch = '0.1.x'
 
 Plugin.dependencies = {
@@ -10,6 +14,8 @@ Plugin.dependencies = {
 Plugin.cmd = {'Telescope'}
 
 function Plugin.init()
+  if vim.g.vscode then return end
+
   -- See :help telescope.builtin
   vim.keymap.set('n', '<leader>?', '<cmd>Telescope oldfiles<cr>')
   vim.keymap.set('n', '<leader><space>', '<cmd>Telescope buffers<cr>')
