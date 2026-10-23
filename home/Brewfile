@@ -15,6 +15,7 @@ brew "git-delta"                 # syntax-highlighted diffs, used by git + lazyg
 brew "lazygit"
 brew "fzf"
 brew "atuin"                     # searchable shell history; owns ctrl-r
+brew "zoxide"                    # `z` directory jumping (replaces jethrokuan/z)
 brew "starship"
 brew "tmux"
 brew "neovim"

@@ -26,10 +26,21 @@ function copyssh -d "Copy an ~/.ssh file to the clipboard"
 end
 
 
-function load_env_vars -d "Load variables in a .env file"
-    for i in (cat $argv)
-        set arr (echo $i |tr = \n)
-        set -gx $arr[1] $arr[2]
+function dotenv -d "Export KEY=VALUE lines from a .env file (default ./.env)"
+    set file .env
+    test (count $argv) -gt 0; and set file $argv[1]
+    if not test -f $file
+        echo "dotenv: $file not found" >&2
+        return 1
+    end
+    for line in (string trim < $file)
+        # Skip blanks and comments; accept an optional leading `export`.
+        string match -qr '^(#|$)' -- $line; and continue
+        set line (string replace -r '^export\s+' '' -- $line)
+        # Split on the first `=` only, so values may contain `=`.
+        set kv (string split -m1 = -- $line)
+        test (count $kv) -eq 2; or continue
+        set -gx (string trim -- $kv[1]) (string trim -c '"\'' -- (string trim -- $kv[2]))
     end
 end
 
@@ -107,7 +118,7 @@ end
 
 complete -c isim -f -a '(xcrun simctl list devices available | string match -rg "^\s+(iPhone.+?) \(")'
 
-function abuild -d"Build Android app locally with EAS and optionally install on device"
+function abuild -d "Build Android app locally with EAS and optionally install on device"
     set profile "dev-local"
     set install_flag 0
 
@@ -303,4 +314,102 @@ function gwl -d "Colorful git worktree list, as a table"
 
     echo
     printf '  %s%d worktrees, %d with uncommitted changes%s\n\n' $dim (count $paths) $dirty_total $off
+end
+
+# Ports / processes
+
+function ports -d "List listening TCP ports (optionally just one: ports 3000)"
+    if test (count $argv) -gt 0
+        lsof -nP -iTCP:$argv[1] -sTCP:LISTEN
+    else
+        lsof -nP -iTCP -sTCP:LISTEN
+    end
+end
+
+function killport -d "Kill whatever is listening on the given port(s)"
+    if test (count $argv) -eq 0
+        echo "usage: killport <port> [port...]" >&2
+        return 1
+    end
+    for p in $argv
+        set pids (lsof -ti tcp:$p -sTCP:LISTEN)
+        if test -z "$pids"
+            echo "nothing listening on :$p"
+            continue
+        end
+        echo "killing :$p (pid $pids)"
+        # Ask nicely first; force only if something survives.
+        kill $pids
+        sleep 0.5
+        set left (lsof -ti tcp:$p -sTCP:LISTEN)
+        test -n "$left"; and kill -9 $left
+    end
+end
+
+function fport -d "Pick listening ports with fzf and kill their processes"
+    set pids (lsof -nP -iTCP -sTCP:LISTEN | sed 1d | fzf -m --header "kill which? (tab to multi-select)" | awk '{print $2}' | sort -u)
+    test -n "$pids"; and kill $pids
+end
+
+function fkill -d "Pick processes with fzf and kill them (fkill -9 to force)"
+    set sig -TERM
+    test (count $argv) -gt 0; and set sig $argv[1]
+    set pids (ps -axo pid,user,%cpu,%mem,command | sed 1d | fzf -m --header "kill $sig (tab to multi-select)" | awk '{print $1}')
+    test -n "$pids"; and kill $sig $pids
+end
+
+# Git
+
+function gbf -d "Checkout a branch picked with fzf, previewing its log"
+    set branch (git branch -a --sort=-committerdate --format='%(refname:short)' \
+        | string match -v -r '^origin(/HEAD)?$' \
+        | fzf --preview 'git log --oneline --graph --color=always -20 {}' \
+        | string replace -r '^origin/' '')
+    # `git checkout foo` on a remote-only branch creates the tracking branch.
+    test -n "$branch"; and git checkout $branch
+end
+
+# Misc
+
+function extract -d "Extract any common archive into the current directory"
+    if test (count $argv) -eq 0
+        echo "usage: extract <archive> [archive...]" >&2
+        return 1
+    end
+    for f in $argv
+        if not test -f $f
+            echo "extract: $f not found" >&2
+            continue
+        end
+        # macOS tar is bsdtar (libarchive): it auto-detects gz/bz2/xz/zst and reads 7z and rar too.
+        switch $f
+            case '*.tar' '*.tar.*' '*.tgz' '*.tbz' '*.tbz2' '*.txz' '*.7z' '*.rar'
+                tar -xf $f
+            case '*.zip' '*.jar'
+                unzip -q $f
+            case '*.gz'
+                gunzip -k $f
+            case '*.bz2'
+                bunzip2 -k $f
+            case '*.xz'
+                unxz -k $f
+            case '*'
+                echo "extract: don't know how to extract $f" >&2
+        end
+    end
+end
+
+function myip -d "Show local and public IP addresses"
+    set iface (route -n get default 2>/dev/null | awk '/interface:/ {print $2}')
+    set local (ipconfig getifaddr $iface 2>/dev/null; or echo unavailable)
+    set public (curl -s --max-time 3 https://api.ipify.org; or echo unavailable)
+    echo "local:  $local ($iface)"
+    echo "public: $public"
+end
+
+function serve -d "Serve the current directory over HTTP (default port 8000)"
+    set port 8000
+    test (count $argv) -gt 0; and set port $argv[1]
+    echo "serving "(pwd)" at http://localhost:$port"
+    python3 -m http.server $port
 end

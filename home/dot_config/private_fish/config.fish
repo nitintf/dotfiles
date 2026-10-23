@@ -43,6 +43,9 @@ if status is-interactive
   # --disable-up-arrow keeps fish's own prefix search on the up key.
   type -q atuin; and atuin init fish --disable-up-arrow | source
 
+  # zoxide — `z <dir>` jumps by frecency, `zi` picks with fzf.
+  type -q zoxide; and zoxide init fish | source
+
   # PatrickF1/fzf.fish also wants ctrl-r. Re-install its bindings with the
   # history one omitted so atuin keeps the key; the rest (ctrl-alt-f/l/s/p/v)
   # stay as they are.
