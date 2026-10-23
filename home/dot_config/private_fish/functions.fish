@@ -88,7 +88,26 @@ function aemu -d "Start Android emulator (first or specific AVD)"
     end
 end
 
-function abuild -d "Build Android app locally with EAS and optionally install on device"
+function isim -d "Start iOS simulator (first iPhone or a named device)"
+    set device $argv[1]
+    if test -z "$device"
+        set device (xcrun simctl list devices available | string match -rg '^\s+(iPhone.+?) \(' | head -1)
+    end
+
+    if test -z "$device"
+        echo "❌ No iPhone simulators found. Install an iOS runtime in Xcode > Settings > Components."
+        return 1
+    end
+
+    echo "📱 Starting simulator: $device"
+    xcrun simctl boot "$device" 2>/dev/null
+    # Xcode 27 replaced Simulator.app with DeviceHub.app; fall back for older Xcodes.
+    open -b com.apple.dt.Devices 2>/dev/null; or open -a Simulator
+end
+
+complete -c isim -f -a '(xcrun simctl list devices available | string match -rg "^\s+(iPhone.+?) \(")'
+
+function abuild -d"Build Android app locally with EAS and optionally install on device"
     set profile "dev-local"
     set install_flag 0
 
